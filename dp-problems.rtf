@@ -1,0 +1,134 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1348\cocoasubrtf170
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;\f2\fmodern\fcharset0 Courier;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red213\green213\blue213;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Following problems are yet to solve\
+\
+1)  Fibonacci series\
+\
+2) Binomial coefficient (n C r)\
+\
+3) String approximation search (Edit distance)\
+\
+	Useful link: {\field{\*\fldinst{HYPERLINK "http://www.csse.monash.edu.au/~lloyd/tildeAlgDS/Dynamic/Edit/"}}{\fldrslt http://www.csse.monash.edu.au/~lloyd/tildeAlgDS/Dynamic/Edit/}}\
+\
+	
+\f1 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 The words `computer' and `commuter' are very similar, and a 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 change
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  of just one letter, p->m will change the first word into the second. The word `sport' can be changed into `sort' by the 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 deletion
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  of the `p', or equivalently, `sort' can be changed into `sport' by the 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 insertion
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  of `p'.\
+\pard\pardeftab720\sa240
+\cf2 The 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 edit distance
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  of two strings, s1 and s2, is defined as the 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 minimum
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  number of 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 point mutations
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  required to change s1 into s2, where a point mutation is one of:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720
+\ls1\ilvl0\cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 change a letter,\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 insert a letter or\cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3.	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 delete a letter\cb1 \
+\pard\pardeftab720\sa240
+\cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \
+The following recurrence relations define the edit distance, d(s1,s2), of two strings s1 and s2:\
+\pard\pardeftab720
+
+\f2 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 d('', '') = 0               -- '' = empty string\
+d(s, '')  = d('', s) = |s|  -- i.e. length of s\
+d(s1+ch1, s2+ch2)\
+  = min( d(s1, s2) + if ch1=ch2 then 0 else 1 fi,\
+         d(s1+ch1, s2) + 1,\
+         d(s1, s2+ch2) + 1 )\
+\pard\pardeftab720
+
+\f1 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 The first two rules above are obviously true, so it is only necessary consider the last one. Here, neither string is the empty string, so each has a last character, ch1 and ch2 respectively. Somehow, ch1 and ch2 have to be explained in an 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 edit
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  of s1+ch1 into s2+ch2. If ch1 equals ch2, they can be
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 matched
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  for no penalty, i.e. 0, and the overall edit distance is d(s1,s2). If ch1 differs from ch2, then ch1 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 could
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  be changed into ch2, i.e. 1, giving an overall cost d(s1,s2)+1. Another possibility is to delete ch1 and edit s1 into s2+ch2, d(s1,s2+ch2)+1. The last possibility is to edit s1+ch1 into s2 and then insert ch2, d(s1+ch1,s2)+1. There are no other alternatives. We take the least expensive, i.e. min, of these alternatives.\
+\pard\pardeftab720\sa240
+\cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \
+The recurrence relations imply an obvious ternary-recursive routine. This is 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 not
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  a good idea because it is exponentially slow, and impractical for strings of more than a very few characters.\
+Examination of the relations reveals that d(s1,s2) depends only on d(s1',s2') where s1' is shorter than s1, or s2' is shorter than s2, or both. This allows the 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 dynamic programming
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0  technique to be used.\
+A two-dimensional matrix, m[0..|s1|,0..|s2|] is used to hold the edit distance values:\
+\pard\pardeftab720
+
+\f2 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 m[i,j] = d(s1[1..i], s2[1..j])\
+\
+m[0,0] = 0\
+m[i,0] = i,  i=1..|s1|\
+m[0,j] = j,  j=1..|s2|\
+\
+m[i,j] = min(m[i-1,j-1]\
+             + if s1[i]=s2[j] then 0 else 1 fi,\
+             m[i-1, j] + 1,\
+             m[i, j-1] + 1 ),  i=1..|s1|, j=1..|s2|\
+\pard\pardeftab720
+
+\f1 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 m[,] can be computed 
+\i \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 row by row
+\i0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 . Row m[i,] depends only on row m[i-1,]. The time complexity of this algorithm is O(|s1|*|s2|). If s1 and s2 have a `similar' length, about `n' say, this complexity is O(n
+\fs20 \expnd0\expndtw0\kerning0
+\super \outl0\strokewidth0 2
+\fs24 \expnd0\expndtw0\kerning0
+\nosupersub \outl0\strokewidth0 ), much better than exponential!
+\f0 \cf0 \cb1 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 4) Longest common subsequence (Not in algos book)\
+\
+	Useful link: {\field{\*\fldinst{HYPERLINK "http://rosettacode.org/wiki/Longest_common_subsequence#C.2B.2B"}}{\fldrslt http://rosettacode.org/wiki/Longest_common_subsequence#C.2B.2B}}\
+\
+\
+5) Longest increasing sequence}
