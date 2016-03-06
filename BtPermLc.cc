@@ -11,31 +11,38 @@ Show Tags
 Show Similar Problems
 */
 
+#include <set>
 #include <vector>
 #include <iostream>
 
 /* iterator */
 class NextItemsItr {
 public:
-  NextItemsItr(const std::vector<bool> &inUse)
-    : _inUse(inUse), _currIdx(-1) {
+  NextItemsItr(const std::vector<bool> &inUse, const std::vector<int> &nums)
+    : _inUse(inUse), _nums(nums), _uniqueItems(), _currIdx(-1) {
   }
   int operator*() const {
     return _currIdx;
   }
   bool next() {
     int tmp = _currIdx + 1;
-    while (tmp < _inUse.size() && _inUse[tmp]) {
+    //TODO: ignore values which are already found
+    while (tmp < _inUse.size() &&
+           (_inUse[tmp] ||
+           _uniqueItems.find(_nums[tmp])!=_uniqueItems.end())) {
       ++tmp;
     }
     if (tmp >= _inUse.size()) {
       return false;
     }
     _currIdx = tmp;
+    _uniqueItems.insert(_nums[_currIdx]);
     return true;
   }
 private:
   const std::vector<bool> &_inUse;
+  const std::vector<int> &_nums;
+  std::set<int> _uniqueItems;
   int _currIdx;
 };
 
@@ -50,7 +57,7 @@ void backtrack(const std::vector<int>& nums,
     perms.push_back(currPerm);
   } else {
     ++level;
-    NextItemsItr itr(inUse);
+    NextItemsItr itr(inUse, nums);
     while (itr.next()) {
       inUse[*itr] = true;
       currPerm[level] = nums[*itr];
@@ -73,6 +80,9 @@ std::vector<std::vector<int>> getPerm(const std::vector<int>& nums) {
 
 class Solution {
 public:
+  std::vector<std::vector<int>> permuteUnique(std::vector<int>& nums) {
+    return getPerm(nums);
+  }
   std::vector<std::vector<int>> permute(std::vector<int>& nums) {
     return getPerm(nums);
   }
@@ -89,8 +99,8 @@ void testGetPerm(const std::vector<int> &nums) {
 }
 
 int main() {
-  std::vector<int> nums { 1, 2, 3 };
+  std::vector<int> nums { 1, 1, 1 };
   testGetPerm(nums);
-  std::vector<int> nums2;
-  testGetPerm(nums2);
+  //std::vector<int> nums2;
+  //testGetPerm(nums2);
 }
