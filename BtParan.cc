@@ -82,13 +82,17 @@ std::vector<std::string> generateParenthesis(uint32_t n) {
 class Solution {
 public:
   std::vector<std::string> generateParenthesis(int n) {
-    return generateParenthesis(n);
+    BtContext ctx(n);
+    backtrack(ctx);
+    return ctx.allParens;
+    //return generateParenthesis(n);
   }
 };
 
 int main() {
   for (uint32_t idx=1; idx <= 1; ++idx) {
-    std::vector<std::string> sol = generateParenthesis(idx);
+    Solution s;
+    std::vector<std::string> sol = s.generateParenthesis(idx);
     for (const auto& val : sol) {
       std::cout << val << "\n";
     }
