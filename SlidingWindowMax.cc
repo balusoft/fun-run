@@ -37,6 +37,8 @@ Q: 5
 Q: 6
 1  3  -1 -3  5  [3  6  7]       7
 Q: 7
+
+See also here: http://www.geeksforgeeks.org/maximum-of-all-subarrays-of-size-k/
 */
 
 #include <vector>
