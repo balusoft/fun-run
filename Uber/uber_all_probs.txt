@@ -22,6 +22,6 @@ Uber Show problem tags
  36   Valid Sudoku                          30.1% Easy
  171  Excel Sheet Column Number             40.9% Easy
  125  Valid Palindrome                      23.5% Easy
- 102  Binary Tree Level Order Traversal     32.2% Easy
+ 102  Binary Tree Level Order Traversal     32.2% Easy    COMPLETED
  266  Palindrome Permutation                50.1% Easy
  13   Roman to Integer                      38.6% Easy
