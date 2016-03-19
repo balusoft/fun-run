@@ -17,7 +17,7 @@ Uber Show problem tags
  104  Maximum Depth of Binary Tree          47.4% Easy    COMPLETED
  206  Reverse Linked List                   38.8% Easy    COMPLETED
  8    String to Integer (atoi)              13.4% Easy    COMPLETED
- 155  Min Stack                             21.7% Easy
+ 155  Min Stack                             21.7% Easy    COMPLETED
  202  Happy Number                          36.0% Easy    COMPLETED
  36   Valid Sudoku                          30.1% Easy    COMPLETED
  171  Excel Sheet Column Number             40.9% Easy    COMPLETED

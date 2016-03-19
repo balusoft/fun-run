@@ -15,15 +15,63 @@ Show Similar Problems
 Have you met this question in a real interview? Yes  No
 Discuss
 
+30 20 19 31 32 4 2 1
+stack: 1 2 4 32 31 19 20 30
+minStack: 1 2 4 19 20 30
 */
+
+#include <stack>
+#include <iostream>
+#include <cassert>
 
 class MinStack {
 public:
-  void push(int x) {}
+  void push(int x) {
+    st.push(x);
+    if (minSt.empty() || minSt.top() >= x) {
+      minSt.push(x);
+    }
+  }
 
-  void pop() {}
+  void pop() {
+    if (st.top() == minSt.top()) {
+      minSt.pop();
+    }
+    st.pop();
+  }
 
-  int top() {}
+  int top() {
+    return st.top();
+  }
 
-  int getMin() {}
+  int getMin() {
+    return minSt.top();
+  }
+
+  bool empty() {
+    assert(st.empty() == minSt.empty());
+    return st.empty() && minSt.empty();
+  }
+private:
+  std::stack<int> st;
+  std::stack<int> minSt;
 };
+
+int main() {
+  MinStack st;
+  st.push(30);
+  st.push(20);
+  st.push(4);
+  st.push(19);
+  st.push(31);
+  st.push(32);
+  st.push(4);
+  st.push(2);
+  st.push(1);
+
+  while(!st.empty()) {
+    std::cout << "Top: " << st.top() << " <<< >>> min: " << st.getMin() << "\n";
+    st.pop();
+  }
+  return 0;
+}
