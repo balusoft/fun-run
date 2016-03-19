@@ -24,3 +24,56 @@ Discuss
 
 
 */
+#include <string>
+#include <cctype>
+#include <iostream>
+
+class Solution {
+public:
+  bool isPalindrome(const std::string& s) {
+    if (s.empty()) {
+      return true;
+    }
+    size_t sidx=0;
+    size_t eidx=s.length()-1;
+    while (sidx < eidx) {
+      for (; sidx <= eidx; ++sidx) {
+        if (std::isalnum(s[sidx])) {
+          break;
+        }
+      }
+      if (sidx >= eidx) { return true; }
+      for (; eidx >= sidx; --eidx) {
+        if (std::isalnum(s[eidx])) {
+          break;
+        }
+      }
+      if (eidx <= sidx) { return true; }
+      if (std::tolower(s[sidx]) != std::tolower(s[eidx])) {
+        return false;
+      }
+      ++sidx;
+      --eidx;
+    }
+    return true;
+  }
+};
+
+void test(const std::string& str) {
+  Solution s;
+  std::cout << std::boolalpha << "str: " << str << " >>> "
+            << s.isPalindrome(str) << "\n";
+  return;
+}
+
+int main() {
+  //test("A man, a plan, a canal: Panama");
+  test("race a car");
+  //test("   ");
+  test("a.");
+  test(".a.");
+  test(".a");
+  test(".a+++++=====");
+  test("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+  return 0;
+}
