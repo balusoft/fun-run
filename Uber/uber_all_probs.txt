@@ -19,7 +19,7 @@ Uber Show problem tags
  8    String to Integer (atoi)              13.4% Easy    COMPLETED
  155  Min Stack                             21.7% Easy
  202  Happy Number                          36.0% Easy    COMPLETED
- 36   Valid Sudoku                          30.1% Easy
+ 36   Valid Sudoku                          30.1% Easy    COMPLETED
  171  Excel Sheet Column Number             40.9% Easy    COMPLETED
  125  Valid Palindrome                      23.5% Easy    COMPLETED
  102  Binary Tree Level Order Traversal     32.2% Easy    COMPLETED
