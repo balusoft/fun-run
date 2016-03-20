@@ -36,6 +36,12 @@ public:
     if (s.empty()) {
       return true;
     }
+    if (s.length() == 1) {
+      return true;
+    }
+    if (s.length() == 2) {
+      return s[0] == s[1];
+    }
     std::unordered_set<char> uniqueChars;
     for (auto c : s) {
       uniqueChars.insert(c);
@@ -56,4 +62,7 @@ int main() {
   test("code");
   test("aab");
   test("carerac");
+  test("a");
+  test("as");
+  test("ass");
 }
