@@ -46,8 +46,11 @@ public:
     for (auto c : s) {
       uniqueChars.insert(c);
     }
-    return ((s.length() / 2) == uniqueChars.size()) ||
-           ((1 + s.length() / 2) == uniqueChars.size());
+    if (s.length() % 2 == 0) {
+      return ((s.length() / 2) == uniqueChars.size());
+    } else {
+      return ((1 + s.length() / 2) == uniqueChars.size());
+    }
   }
 };
 
@@ -65,4 +68,5 @@ int main() {
   test("a");
   test("as");
   test("ass");
+  test("aabc");
 }
