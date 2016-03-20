@@ -19,17 +19,8 @@ Discuss
 */
 #include <iostream>
 #include <string>
-#include <unordered_set>
+#include <unordered_map>
 
-std::ostream &operator<<(std::ostream &ostr,
-                         const std::unordered_set<char> &s) {
-  ostr << "{";
-  for (auto c : s) {
-    ostr << c << ", ";
-  }
-  ostr << "}";
-  return ostr;
-}
 class Solution {
 public:
   bool canPermutePalindrome(const std::string &s) {
@@ -42,15 +33,26 @@ public:
     if (s.length() == 2) {
       return s[0] == s[1];
     }
-    std::unordered_set<char> uniqueChars;
+    std::unordered_map<char, size_t> uniqueChars;
     for (auto c : s) {
-      uniqueChars.insert(c);
+      if (uniqueChars.find(c) == uniqueChars.end()) {
+        uniqueChars[c] = 1;
+      } else {
+        uniqueChars[c] += 1;
+      }
     }
-    if (s.length() % 2 == 0) {
-      return ((s.length() / 2) == uniqueChars.size());
-    } else {
-      return ((1 + s.length() / 2) == uniqueChars.size());
+
+    size_t evenC=0;
+    size_t oddC=0;
+
+    for (auto &kv : uniqueChars) {
+      if (kv.second % 2 == 0) {
+        ++evenC;
+      } else {
+        ++oddC;
+      }
     }
+    return oddC <= 1;
   }
 };
 
@@ -69,4 +71,6 @@ int main() {
   test("as");
   test("ass");
   test("aabc");
+  test("aaaa");
+  test("aaa");
 }
