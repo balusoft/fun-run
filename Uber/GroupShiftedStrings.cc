@@ -75,11 +75,11 @@ public:
     resMapType resMap;
     for (auto& st : strings) {
       std::string key=get_string_key(st);
-      if (resMap.find(key) == resMap.end()) {
-        resMap[key] = { st };
-      } else {
-        resMap[key].push_back(st);
-      }
+      resMap[key].push_back(st);
+      //if (resMap.find(key) == resMap.end()) {
+      //  resMap[key] = { st };
+      //} else {
+      //}
     }
     //return resMap.values();
     std::vector<std::vector<std::string>> res;
