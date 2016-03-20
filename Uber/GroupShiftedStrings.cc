@@ -58,7 +58,11 @@ static std::string get_string_key(const std::string& st) {
     return ostr.str();
   }
   for (size_t idx=1; idx<st.length(); ++idx) {
-    ostr << st[idx-1] - st[idx] << ":";
+    int diff=st[idx]-st[idx-1];
+    if (diff < 0) {
+      diff = 26 + diff;
+    }
+    ostr << diff << ":";
   }
   return ostr.str();
 }
