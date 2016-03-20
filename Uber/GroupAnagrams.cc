@@ -25,9 +25,76 @@ Discuss
 
 */
 
-class Solution {
-  public:
-    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+#include <set>
 
+static std::string countSort(const std::string &str) {
+  std::vector<int> alpha(26, 0);
+  for (auto &c : str) {
+    alpha[c-'a'] += 1;
+  }
+
+  std::string out;
+  for (size_t idx=0; idx<alpha.size(); ++idx) {
+    if (alpha[idx] > 0) {
+      out += std::string(alpha[idx], 'a' + idx);
     }
+  }
+  return out;
+}
+
+class Solution {
+public:
+  std::vector<std::vector<std::string>>
+  groupAnagrams(const std::vector<std::string> &strs) {
+    std::vector<std::vector<std::string>> blah;
+    if (strs.empty()) {
+      return blah;
+    }
+    typedef std::unordered_map<std::string, std::multiset<std::string>> AngMapT;
+    AngMapT map;
+    for (auto &s : strs) {
+      std::string tmp = countSort(s);
+      //std::sort(tmp.begin(), tmp.end());
+      map[tmp].insert(s);
+    }
+
+    for (auto &res : map) {
+      std::vector<std::string> tmp(res.second.begin(), res.second.end());
+      blah.push_back(tmp);
+    }
+    return blah;
+  }
 };
+
+std::ostream& operator<<(std::ostream &ostr,
+                        const std::vector<std::string> &given) {
+  ostr << "{";
+  for (auto &s : given) {
+    ostr << s << ", ";
+  }
+  ostr << "}";
+  return ostr;
+}
+
+std::ostream &operator<<(std::ostream &ostr,
+                         const std::vector<std::vector<std::string>> &res) {
+  ostr << "{\n";
+  for (auto &vs : res) {
+    ostr << vs << ", \n";
+  }
+  ostr << "}\n";
+  return ostr;
+}
+void test(const std::vector<std::string>& vs) {
+  Solution s;
+  std::cout << "Given " << vs << ":::" << s.groupAnagrams(vs) << "\n";
+}
+
+int main() {
+  std::vector<std::string> vs{"eat", "tea", "tan", "ate", "nat", "bat"};
+  test(vs);
+}
