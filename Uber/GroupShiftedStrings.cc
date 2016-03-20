@@ -85,7 +85,10 @@ public:
     std::vector<std::vector<std::string>> res;
     res.reserve(resMap.size());
     std::transform(resMap.begin(), resMap.end(), std::back_inserter(res),
-              [](resMapType::value_type &val) {return val.second;});
+                   [](resMapType::value_type &val) {
+                     std::sort(val.second.begin(), val.second.end());
+                     return val.second;
+                   });
     //for (auto &kv : resMap) {
     //  res.push_back(kv.second);
     //}
