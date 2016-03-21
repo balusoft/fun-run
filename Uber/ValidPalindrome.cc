@@ -28,6 +28,8 @@ Discuss
 #include <cctype>
 #include <iostream>
 
+#include <cxxtest/TestSuite.h>
+
 class Solution {
 public:
   bool isPalindrome(const std::string& s) {
@@ -59,3 +61,19 @@ public:
   }
 };
 
+class ValidPalindromeTestSuite : public CxxTest::TestSuite {
+public:
+  void test_all() {
+    Solution s;
+    // test("A man, a plan, a canal: Panama");
+    TS_ASSERT_EQUALS(s.isPalindrome("race a car"), false);
+    TS_ASSERT_EQUALS(s.isPalindrome("a."), true);
+    TS_ASSERT_EQUALS(s.isPalindrome(".a."), true);
+    TS_ASSERT_EQUALS(s.isPalindrome(".a"), true);
+    TS_ASSERT_EQUALS(s.isPalindrome(".a+++++====="), true);
+    TS_ASSERT_EQUALS(
+        s.isPalindrome(
+            "++++++++++++++++++++++++++++++++++++++++++++++++++++++++"),
+        true);
+  }
+};
