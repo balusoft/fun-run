@@ -59,21 +59,3 @@ public:
   }
 };
 
-void test(const std::string& str) {
-  Solution s;
-  std::cout << std::boolalpha << "str: " << str << " >>> "
-            << s.isPalindrome(str) << "\n";
-  return;
-}
-
-int main() {
-  //test("A man, a plan, a canal: Panama");
-  test("race a car");
-  //test("   ");
-  test("a.");
-  test(".a.");
-  test(".a");
-  test(".a+++++=====");
-  test("++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-  return 0;
-}
