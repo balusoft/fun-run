@@ -22,7 +22,7 @@ Discuss
 #include <cxxtest/TestSuite.h>
 
 class TrieNode;
-typedef TrieNode* TrieNodePtr;
+typedef std::shared_ptr<TrieNode> TrieNodePtr;
 class TrieNode {
 public:
   // Initialize your data structure here.
@@ -71,7 +71,7 @@ private:
     TrieNodePtr itr = root;
     for (auto &c : word) {
       if (!itr->next[c-'a']) {
-        return nullptr;
+        return TrieNodePtr();
       }
       itr = itr->next[c-'a'];
     }
