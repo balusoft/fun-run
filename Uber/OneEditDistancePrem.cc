@@ -85,8 +85,8 @@ public:
     Solution s;
     TS_ASSERT_EQUALS(s.isOneEditDistance("one","oneabc"), false);
   }
-  void test_3m() {
+  void test_1a() {
     Solution s;
-    TS_ASSERT_EQUALS(s.isOneEditDistance("aone","one"), false);
+    TS_ASSERT_EQUALS(s.isOneEditDistance("aone","onea"), false);
   }
 };
