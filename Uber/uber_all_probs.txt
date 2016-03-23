@@ -5,7 +5,7 @@ Uber Show problem tags
  138  Copy List with Random Pointer         26.0% Hard
  146  LRU Cache                             15.7% Hard
  23   Merge k Sorted Lists                  23.0% Hard
- 33   Search in Rotated Sorted Array        30.1% Hard
+ 33   Search in Rotated Sorted Array        30.1% Hard    COMPLETED
  17   Letter Combinations of a Phone Number 28.2% Medium  COMPLETED
  49   Group Anagrams                        26.9% Medium  COMPLETED
  121  Best Time to Buy and Sell Stock       35.7% Medium  COMPLETED
