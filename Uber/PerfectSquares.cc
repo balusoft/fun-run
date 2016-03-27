@@ -38,7 +38,7 @@ private:
       return cache[n];
     }
     int rMax = sqrt(n);
-    int min = INT_MAX;
+    int min = n;
     for (int i=rMax; i>0; --i) {
       int factor = n/(i*i);
       int tmp = factor + dp(n-(factor*i*i));
