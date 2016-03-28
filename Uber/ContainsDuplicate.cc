@@ -68,7 +68,8 @@ public:
       int lbV = nums[i] - t;     // lb is inclusive [
       set<int>::iterator lb = kBST.lower_bound(lbV);
       //std::cout << "(lbV) : (" << lbV << ")\n";
-      //std::cout << std::boolalpha << "(lbB) : (" << (lb != kBST.end()) << ")\n";
+      // std::cout << std::boolalpha << "(lbB) : (" << (lb != kBST.end()) <<
+      // ")\n";
       if (lb != kBST.end() && abs(*lb - nums[i]) <= t) {
         return true;
       }
