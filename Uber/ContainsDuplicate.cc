@@ -70,6 +70,9 @@ public:
       //std::cout << "(lbV) : (" << lbV << ")\n";
       // std::cout << std::boolalpha << "(lbB) : (" << (lb != kBST.end()) <<
       // ")\n";
+      if (lb != kBST.end()) {
+        //std::cout << "(lb): (" << *lb << ")\n";
+      }
       if (lb != kBST.end() && abs(*lb - nums[i]) <= t) {
         return true;
       }
@@ -86,21 +89,26 @@ public:
 
 class TestSolution : public CxxTest::TestSuite{
 public:
-  void test_example_desc() {
+  void XXXtest_example_desc() {
     vector<int> v{200, 210, 212, 70};
     Solution s;
     TS_ASSERT_EQUALS(s.containsNearbyAlmostDuplicate(v, 3, 70), true);
     TS_ASSERT_EQUALS(s.containsNearbyAlmostDuplicate(v, 1, 70), true);
     TS_ASSERT_EQUALS(s.containsNearbyAlmostDuplicate(v, 1, 1), false);
   }
-  void test_example_asc() {
+  void XXXtest_example_asc() {
     vector<int> v{10, 20, 30, 40, 90, 200};
     Solution s;
     TS_ASSERT_EQUALS(s.containsNearbyAlmostDuplicate(v, 3, 70), true);
   }
-  void test_fail1() {
+  void XXXtest_fail1() {
     vector<int> v{3, 6, 0, 2};
     Solution s;
     TS_ASSERT_EQUALS(s.containsNearbyAlmostDuplicate(v, 2, 2), true);
+  }
+  void test_fail2() {
+    vector<int> v{1, 20, 2};
+    Solution s;
+    TS_ASSERT_EQUALS(s.containsNearbyAlmostDuplicate(v, 2, 1), true);
   }
 };
