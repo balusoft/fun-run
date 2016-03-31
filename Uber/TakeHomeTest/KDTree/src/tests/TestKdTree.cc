@@ -1,5 +1,5 @@
 // Unit test for KdTree
-#include <KdTree.hpp>
+#include <KDTree.hpp>
 #include <cxxtest/TestSuite.h>
 #include <string>
 
