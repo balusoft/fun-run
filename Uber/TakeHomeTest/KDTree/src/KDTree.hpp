@@ -141,6 +141,9 @@ uber::KdTree<ElemType>::KdTree()
 template <typename ElemType>
 uber::KdTree<ElemType>::KdTree(const std::string &filepath) {}
 
+/**
+ Insert list of points into KD tree
+ */
 template <typename ElemType>
 void uber::KdTree<ElemType>::insert(
     const std::vector<Point<ElemType>> &points) {
@@ -151,18 +154,17 @@ void uber::KdTree<ElemType>::insert(
   std::vector<Point<ElemType>> wPoints(points);
   // Start with full vector and 0th dimension
   root_ = buildPartitions(wPoints, 0, wPoints.size()-1, 0);
-  std::cout << "BP: " << root_ << "\n\n";
   for (const auto& point : wPoints) {
     insert(point);
   }
-  std::cout << "BP3: " << root_ << "\n\n";
 }
 
+/**
+ insert given point into KD tree
+ */
 template <typename ElemType>
 void uber::KdTree<ElemType>::insert(const Point<ElemType> &point) {
   KdTreeNodePtr<ElemType> itr = findLeaf(root_, point, nullptr);
-  //std::cout << "BP2: " << root_ << "\n\n";
-  //std::cout << "Leaf: " << itr << "\n\n";
   if (!itr->isLeaf()) {
     size_t dim = itr->dimension();
     auto node =  std::make_shared<KdTreeNode<ElemType>>();
@@ -179,7 +181,7 @@ void uber::KdTree<ElemType>::insert(const Point<ElemType> &point) {
 }
 
 /**
-  This is recursive method adds all points to the KD tree recursively.
+  This is recursive method adds all partitions to the KD tree recursively.
   1) Finds median between start and end
   2) set slice point as median value
   3) continue populating nodes from startIdx to median-1
@@ -189,7 +191,6 @@ template <typename ElemType>
 uber::KdTreeNodePtr<ElemType> uber::KdTree<ElemType>::buildPartitions(
     std::vector<Point<ElemType>> &points, const size_t startIdx,
     const size_t endIdx, const size_t dimension) {
-  std::cout << "\nstart: " << startIdx << ", end: " << endIdx << ", dim:" << dimension;
   if (startIdx > points.size() || endIdx > points.size() || startIdx > endIdx) {
     return KdTreeNodePtr<ElemType>();
   }
@@ -205,7 +206,6 @@ uber::KdTreeNodePtr<ElemType> uber::KdTree<ElemType>::buildPartitions(
   size_t median = (startIdx + endIdx) / 2;
   std::nth_element(points.begin() + startIdx, points.begin() + median,
                    points.begin() + endIdx + 1, cmp);
-  std::cout << ", median:" << median << ", value: " << points[median][dimension] << ", Point:" << points<< "\n";
   ++sliceNodesCount_;
   KdTreeNodePtr<ElemType> curNode = std::make_shared<KdTreeNode<ElemType>>();
   curNode->setSlicePoint(points[median][dimension]);
@@ -222,6 +222,10 @@ uber::KdTreeNodePtr<ElemType> uber::KdTree<ElemType>::buildPartitions(
   return curNode;
 }
 
+/**
+ find leaf node for given point
+ @return return bottom of tree node for given point
+ */
 template <typename ElemType>
 uber::KdTreeNodePtr<ElemType>
 uber::KdTree<ElemType>::findLeaf(KdTreeNodePtr<ElemType> node,
@@ -252,45 +256,37 @@ uber::KdTree<ElemType>::findLeaf(KdTreeNodePtr<ElemType> node,
       }
     }
   }
-  if (btStack) {
-    if (btStack->empty()) {
-      std::cout << "\n\nstack empty\n";
-    } else {
-      auto &tp = btStack->top();
-      std::cout << "\n\nstack top: node: " << std::get<0>(tp)
-                << ", lr: " << std::get<1>(tp) << "\n";
-    }
-  }
   return node;
 }
 
+/**
+ find leaf node which holds point
+ algorithm:
+  1) find leaf node (findLeaf)
+  2) if it is leaf return
+  3) if it is not leaf backtrack search in other branch
+ @return Nearest neighbor for given node in greedy way.
+ */
 template <typename ElemType>
 uber::KdTreeNodePtr<ElemType>
 uber::KdTree<ElemType>::findLeafPoint(KdTreeNodePtr<ElemType> node,
                                  const Point<ElemType> &point,
                                  BtStack<ElemType> &btStack) {
   auto leaf = findLeaf(node, point, &btStack);
-  while (true) {
-    if (leaf->isLeaf()) {
-      return leaf;
-    } else if (leaf->left()) {
-      btStack.pop();
-      btStack.push(std::make_tuple(leaf, true));
-      auto &tp = btStack.top();
-      std::cout << "\n\n2node: " << leaf << "\n";
-      std::cout << "stack top2: leaf: " << std::get<0>(tp)
-                << ", lr: " << std::get<1>(tp) << "\n\n";
-      return findLeafPoint(leaf->left(), point, btStack);
-    } else if (leaf->right()) {
-      btStack.pop();
-      btStack.push(std::make_tuple(leaf, false));
-      auto &tp = btStack.top();
-      std::cout << "\n\n2node: " << leaf << "\n";
-      std::cout << "\n\nstack top2: node: " << std::get<0>(tp)
-                << ", lr: " << std::get<1>(tp) << "\n";
-      return findLeafPoint(leaf->right(), point, btStack);
-    } else {
-      assert(0);
+  //  while (true) {
+  if (leaf->isLeaf()) {
+    return leaf;
+  } else if (leaf->left()) {
+    btStack.pop();
+    btStack.push(std::make_tuple(leaf, true));
+    return findLeafPoint(leaf->left(), point, btStack);
+  } else if (leaf->right()) {
+    btStack.pop();
+    btStack.push(std::make_tuple(leaf, false));
+    return findLeafPoint(leaf->right(), point, btStack);
+  } else {
+    assert(0 == "Should never reach here");
+#if 0
       auto &tp = btStack.top();
       leaf = std::get<0>(tp);
       bool lr = std::get<1>(tp);
@@ -308,11 +304,15 @@ uber::KdTree<ElemType>::findLeafPoint(KdTreeNodePtr<ElemType> node,
       tp = btStack.top();
       leaf = std::get<0>(tp);
       lr = std::get<1>(tp);
-    }
+#endif
+    //    }
   }
 }
-// Using geometry formula between two numbers
-// dist^2 = (deltaX)^2 + (deltaY)^2
+/*
+ Using geometry formula between two numbers
+ dist^2 = (deltaX)^2 + (deltaY)^2
+ @return distance between two points
+*/
 template <typename ElemType>
 ElemType uber::KdTree<ElemType>::calcDist(const Point<ElemType> &a,
                                           const Point<ElemType> &b) {
@@ -324,13 +324,19 @@ ElemType uber::KdTree<ElemType>::calcDist(const Point<ElemType> &a,
   }
   return dist;
 }
-// This provides distance between planes.
+/**
+ @return This provides distance between point plane and given plane(slice) value.
+*/
 template <typename ElemType>
 ElemType uber::KdTree<ElemType>::calcDist(const Point<ElemType> &a,
                                           const size_t sliceValue,
                                           const size_t dim) {
   return fabs(a[dim] - sliceValue);
 }
+
+/**
+ @return returns closest point from the leaf node to given point.
+ */
 template <typename ElemType>
 uber::Point<ElemType> &
 uber::KdTree<ElemType>::nearPoint(const KdTreeNodePtr<ElemType> &node,
@@ -341,65 +347,56 @@ uber::KdTree<ElemType>::nearPoint(const KdTreeNodePtr<ElemType> &node,
       };
   return *std::min_element(node->points().begin(), node->points().end(), cmp);
 }
-
+/**
+ algorithm:
+ 1) Find leaf node based on search point
+ 2) mark it as a current best point and current best distance to given point.
+ 3) backtrack the tree depth to find better point:
+    3.1) check whether parent plane is closer than current-best-point
+    3.2) if it is closer, check for closer point
+    3.3) if you find closer point update it as current best point
+ */
 template <typename ElemType>
 const uber::Point<ElemType>&
 uber::KdTree<ElemType>::findNearestNighbor(const Point<ElemType> &point) {
-  //step1: find leaf node
-  //step2: maintain stack of nodes for backtracking
+  // backtrack of nodes
   BtStack<ElemType> btStack;
   std::set<KdTreeNodePtr<ElemType>> visited;
-  std::cout << "ROOT>>>: " << root_ << "\n" << "\n";
+  // find leaf node
   KdTreeNodePtr<ElemType> leaf = findLeafPoint(root_, point, btStack);
-  std::cout << "leaf1: " << leaf << "\n";
   Point<ElemType> &curNearPoint = nearPoint(leaf, point);
-  std::cout << "NP: " << curNearPoint << "\n";
   ElemType curDist = calcDist(point, curNearPoint);
+  // Back track for better nodes
   while (!btStack.empty()) {
-    // true means previous selection was left, false means right
-    // hence we need to visit right in case of true otherwise left
     auto& tp = btStack.top();
     size_t dim = std::get<0>(tp)->dimension();
-    std::cout << "\n\nstack top: node: " << std::get<0>(tp)
-              << ", lr: " << std::get<1>(tp) << "\n";
-    std::cout << "CBP: " << curNearPoint << "\n";
-    std::cout << "curDist: " << curDist << "\n";
     visited.insert(std::get<0>(tp));
     btStack.pop();
     KdTreeNodePtr<ElemType> tmpNodePtr;
-    std::cout << "tp1: " << std::get<1>(tp) << "\n";
-    if (std::get<1>(tp)) {
-      std::cout << "choosing right\n";
-      tmpNodePtr = std::get<0>(tp)->right();
-    } else {
-      std::cout << "choosing left\n";
-      tmpNodePtr = std::get<0>(tp)->left();
-    }
+    // true means previous selection was left, false means right
+    // hence we need to visit right in case of true otherwise left
+    tmpNodePtr =
+        std::get<1>(tp) ? std::get<0>(tp)->right() : std::get<0>(tp)->left();
     if (!tmpNodePtr) {
       continue;
     }
     if (visited.find(tmpNodePtr) != visited.end()) {
       continue;
     }
-    std::cout << "tmpNode: " << tmpNodePtr << "\n";
+    // Check whether plane is closer with respet current best point
     ElemType tmpDist =
         calcDist(point, tmpNodePtr->slicePoint(), dim);
-    std::cout << "tmpDist: " << tmpDist << "\n";
     ElemType curBestDist =
         calcDist(curNearPoint, tmpNodePtr->slicePoint(), dim);
-    std::cout << "curBestDist2: " << curBestDist << "\n";
+    // if plane is closer check whether is there any better point
     if (tmpDist < curBestDist) {
       leaf = findLeafPoint(tmpNodePtr, point, btStack);
-      std::cout << "\n\n\nleaf2:: " << leaf << "\n";
       auto &tmpCurNearPoint = nearPoint(leaf, point);
-      std::cout << "tCNP: " << tmpCurNearPoint << "\n";
       auto tmpCurDist = calcDist(point, tmpCurNearPoint);
-      std::cout << "tmpCurDist: " << tmpCurDist << "\n";
+      // if there is better point update current best point
       if (tmpCurDist < curDist) {
         curNearPoint = tmpCurNearPoint;
         curDist = tmpCurDist;
-        std::cout << "up curNearPoint: " <<  curNearPoint << "\n";
-        std::cout << "up curDist: " << curDist << "\n";
       }
     }
   }
