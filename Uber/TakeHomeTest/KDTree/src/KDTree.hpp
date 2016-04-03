@@ -73,6 +73,18 @@ private:
   ElemType slicePoint_;
   bool leaf_;
 };
+
+template <typename ElemType> class MedianPartition {
+public:
+  std::tuple<size_t, size_t, ElemType>
+  operator()(std::vector<Point<ElemType>> &points, const size_t startIdx,
+             const size_t endIdx);
+
+private:
+  size_t getDimension(std::vector<Point<ElemType>> &points, const size_t startIdx,
+                    const size_t endIdx);
+};
+
 template <typename ElemType>
 std::ostream& operator<<(std::ostream& ostr, const KdTreeNodePtr<ElemType> node) {
   if (!node) {
@@ -93,7 +105,8 @@ template <typename ElemType>
 using BtTuple = std::tuple<KdTreeNodePtr<ElemType>, bool>;
 template <typename ElemType>
 using BtStack = std::stack<BtTuple<ElemType>>;
-template <typename ElemType>
+//template <typename ElemType, template<typename> class Partition = MedianPartition>
+template <typename ElemType, typename Partition = MedianPartition<ElemType>>
 class KdTree : public ArithmeticTemplate<ElemType> {
 public:
   KdTree();
@@ -106,9 +119,8 @@ public:
 
 private:
   KdTreeNodePtr<ElemType> buildPartitions(std::vector<Point<ElemType>> &points,
-                                           const size_t startIdx,
-                                           const size_t endIdx,
-                                           const size_t dimension);
+                                          const size_t startIdx,
+                                          const size_t endIdx);
   void insert(const Point<ElemType>& point);
   void insert(std::vector<Point<ElemType>> &points, const size_t startIdx,
               const size_t endIdx, const size_t dimension,
@@ -127,25 +139,77 @@ private:
   std::shared_ptr<KdTreeNode<ElemType>> root_;
   size_t sliceNodesCount_;
   size_t size_;
+  //Partition<ElemType> partition;
+  Partition partition;
 };
-};
+}
 
 template <typename ElemType>
 uber::KdTreeNode<ElemType>::KdTreeNode()
     : dimension_(0), slicePoint_(0), leaf_(false) {}
 
 template <typename ElemType>
-uber::KdTree<ElemType>::KdTree()
-    : sliceNodesCount_(0), size_(0) {}
+size_t uber::MedianPartition<ElemType>::
+getDimension(std::vector<Point<ElemType>> &points, const size_t startIdx,
+           const size_t endIdx) {
+  // Build range vector
+  std::vector<ElemType> rangeV(points[0].size());
+  for (size_t dim = 0; dim < rangeV.size(); ++dim) {
+    const auto cmp =
+        [&dim](const Point<ElemType> &a, const Point<ElemType> &b) {
+          return a[dim] < b[dim];
+        };
+    std::nth_element(points.begin() + startIdx, points.begin() + startIdx,
+                     points.begin() + endIdx + 1, cmp);
+    const ElemType min=points[startIdx][dim];
+    std::nth_element(points.begin() + startIdx, points.begin() + endIdx,
+                     points.begin() + endIdx + 1, cmp);
+    const ElemType max=points[endIdx][dim];
+    assert(max>=min);
+    rangeV[dim]=max-min;
+  }
+  auto maxPos = std::max_element(rangeV.begin(), rangeV.end());
+  return std::distance(rangeV.begin(), maxPos);
+}
 
 template <typename ElemType>
-uber::KdTree<ElemType>::KdTree(const std::string &filepath) {}
+std::tuple<size_t, size_t, ElemType> uber::MedianPartition<ElemType>::
+operator()(std::vector<Point<ElemType>> &points, const size_t startIdx,
+           const size_t endIdx) {
+  assert(startIdx <= endIdx);
+  // calculate mediat
+  // sort points from startIdx to endIdx
+  size_t dim=getDimension(points, startIdx, endIdx);
+  const auto cmp =
+      [&dim](const Point<ElemType> &a, const Point<ElemType> &b) {
+        return a[dim] < b[dim];
+      };
+  // INFO: you could use sort but it is costly
+  // std::sort(points.begin() + startIdx, points.begin() + endIdx + 1, cmp);
+  size_t partitionIdx = (startIdx + endIdx) / 2;
+  std::nth_element(points.begin() + startIdx, points.begin() + partitionIdx,
+                   points.begin() + endIdx + 1, cmp);
+  ElemType sliceValue = points[partitionIdx][dim];
+  if ((endIdx - startIdx + 1) % 2 == 0) {
+    std::nth_element(points.begin() + startIdx, points.begin() + partitionIdx + 1,
+                     points.begin() + endIdx + 1, cmp);
+    sliceValue = (sliceValue + points[partitionIdx+1][dim])/2;
+  }
+  return std::make_tuple(dim, partitionIdx, sliceValue);
+}
+
+template <typename ElemType, typename Partition>
+uber::KdTree<ElemType, Partition>::KdTree()
+    : sliceNodesCount_(0), size_(0), partition() {}
+
+template <typename ElemType, typename Partition>
+uber::KdTree<ElemType, Partition>::KdTree(const std::string &filepath) {}
 
 /**
  Insert list of points into KD tree
  */
-template <typename ElemType>
-void uber::KdTree<ElemType>::insert(
+template <typename ElemType, typename Partition>
+void uber::KdTree<ElemType, Partition>::insert(
     const std::vector<Point<ElemType>> &points) {
   if (points.empty()) {
     return;
@@ -153,7 +217,7 @@ void uber::KdTree<ElemType>::insert(
   //Make copy so that we can sort them
   std::vector<Point<ElemType>> wPoints(points);
   // Start with full vector and 0th dimension
-  root_ = buildPartitions(wPoints, 0, wPoints.size()-1, 0);
+  root_ = buildPartitions(wPoints, 0, wPoints.size()-1);
   for (const auto& point : wPoints) {
     insert(point);
   }
@@ -162,8 +226,8 @@ void uber::KdTree<ElemType>::insert(
 /**
  insert given point into KD tree
  */
-template <typename ElemType>
-void uber::KdTree<ElemType>::insert(const Point<ElemType> &point) {
+template <typename ElemType, typename Partition>
+void uber::KdTree<ElemType, Partition>::insert(const Point<ElemType> &point) {
   KdTreeNodePtr<ElemType> itr = findLeaf(root_, point, nullptr);
   if (!itr->isLeaf()) {
     size_t dim = itr->dimension();
@@ -187,37 +251,28 @@ void uber::KdTree<ElemType>::insert(const Point<ElemType> &point) {
   3) continue populating nodes from startIdx to median-1
   4) continue populating nodes from median+1 to endIdx
  */
-template <typename ElemType>
-uber::KdTreeNodePtr<ElemType> uber::KdTree<ElemType>::buildPartitions(
+template <typename ElemType, typename Partition>
+uber::KdTreeNodePtr<ElemType> uber::KdTree<ElemType, Partition>::buildPartitions(
     std::vector<Point<ElemType>> &points, const size_t startIdx,
-    const size_t endIdx, const size_t dimension) {
+    const size_t endIdx) {
   if (startIdx > points.size() || endIdx > points.size() || startIdx > endIdx) {
     return KdTreeNodePtr<ElemType>();
   }
+  auto partitionRes = partition(points, startIdx, endIdx);
+  size_t dimension = std::get<0>(partitionRes);
   assert(dimension < points[0].size());
-  // calculate mediat
-  // sort points from startIdx to endIdx
-  static const auto cmp =
-      [&dimension](const Point<ElemType> &a, const Point<ElemType> &b) {
-        return a[dimension] < b[dimension];
-      };
-  // INFO: you could use sort but it is costly
-  //std::sort(points.begin() + startIdx, points.begin() + endIdx + 1, cmp);
-  size_t median = (startIdx + endIdx) / 2;
-  std::nth_element(points.begin() + startIdx, points.begin() + median,
-                   points.begin() + endIdx + 1, cmp);
+  size_t partitionIdx = std::get<1>(partitionRes);
+  ElemType sliceValue = std::get<2>(partitionRes);
   ++sliceNodesCount_;
   KdTreeNodePtr<ElemType> curNode = std::make_shared<KdTreeNode<ElemType>>();
-  curNode->setSlicePoint(points[median][dimension]);
+  curNode->setSlicePoint(sliceValue);
   curNode->setDimension(dimension);
-  // Assuming all points have same dimensions
-  size_t nextDimension = (dimension + 1) % points[0].size();
-  KdTreeNodePtr<ElemType> beforeMedian = buildPartitions(
-      points, startIdx, median - 1, nextDimension);
+  // Init recursively left and right subtrees
+  KdTreeNodePtr<ElemType> beforeMedian =
+      buildPartitions(points, startIdx, partitionIdx - 1);
   curNode->setLeft(beforeMedian);
-
   KdTreeNodePtr<ElemType> afterMedian =
-      buildPartitions(points, median + 1, endIdx, nextDimension);
+      buildPartitions(points, partitionIdx + 1, endIdx);
   curNode->setRight(afterMedian);
   return curNode;
 }
@@ -226,9 +281,9 @@ uber::KdTreeNodePtr<ElemType> uber::KdTree<ElemType>::buildPartitions(
  find leaf node for given point
  @return return bottom of tree node for given point
  */
-template <typename ElemType>
+template <typename ElemType, typename Partition>
 uber::KdTreeNodePtr<ElemType>
-uber::KdTree<ElemType>::findLeaf(KdTreeNodePtr<ElemType> node,
+uber::KdTree<ElemType, Partition>::findLeaf(KdTreeNodePtr<ElemType> node,
                                  const Point<ElemType> &point,
                                  BtStack<ElemType> *btStack) {
   while(node) {
@@ -267,9 +322,9 @@ uber::KdTree<ElemType>::findLeaf(KdTreeNodePtr<ElemType> node,
   3) if it is not leaf backtrack search in other branch
  @return Nearest neighbor for given node in greedy way.
  */
-template <typename ElemType>
+template <typename ElemType, typename Partition>
 uber::KdTreeNodePtr<ElemType>
-uber::KdTree<ElemType>::findLeafPoint(KdTreeNodePtr<ElemType> node,
+uber::KdTree<ElemType, Partition>::findLeafPoint(KdTreeNodePtr<ElemType> node,
                                  const Point<ElemType> &point,
                                  BtStack<ElemType> &btStack) {
   auto leaf = findLeaf(node, point, &btStack);
@@ -313,8 +368,8 @@ uber::KdTree<ElemType>::findLeafPoint(KdTreeNodePtr<ElemType> node,
  dist^2 = (deltaX)^2 + (deltaY)^2
  @return distance between two points
 */
-template <typename ElemType>
-ElemType uber::KdTree<ElemType>::calcDist(const Point<ElemType> &a,
+template <typename ElemType, typename Partition>
+ElemType uber::KdTree<ElemType, Partition>::calcDist(const Point<ElemType> &a,
                                           const Point<ElemType> &b) {
   assert(a.size() == b.size());
   ElemType dist=0;
@@ -327,8 +382,8 @@ ElemType uber::KdTree<ElemType>::calcDist(const Point<ElemType> &a,
 /**
  @return This provides distance between point plane and given plane(slice) value.
 */
-template <typename ElemType>
-ElemType uber::KdTree<ElemType>::calcDist(const Point<ElemType> &a,
+template <typename ElemType, typename Partition>
+ElemType uber::KdTree<ElemType, Partition>::calcDist(const Point<ElemType> &a,
                                           const size_t sliceValue,
                                           const size_t dim) {
   return fabs(a[dim] - sliceValue);
@@ -337,9 +392,9 @@ ElemType uber::KdTree<ElemType>::calcDist(const Point<ElemType> &a,
 /**
  @return returns closest point from the leaf node to given point.
  */
-template <typename ElemType>
+template <typename ElemType, typename Partition>
 uber::Point<ElemType> &
-uber::KdTree<ElemType>::nearPoint(const KdTreeNodePtr<ElemType> &node,
+uber::KdTree<ElemType, Partition>::nearPoint(const KdTreeNodePtr<ElemType> &node,
                                   const Point<ElemType> &point) {
   auto cmp =
       [this, &point, &node](const Point<ElemType> &a, const Point<ElemType> &b) {
@@ -356,13 +411,14 @@ uber::KdTree<ElemType>::nearPoint(const KdTreeNodePtr<ElemType> &node,
     3.2) if it is closer, check for closer point
     3.3) if you find closer point update it as current best point
  */
-template <typename ElemType>
+template <typename ElemType, typename Partition>
 const uber::Point<ElemType>&
-uber::KdTree<ElemType>::findNearestNighbor(const Point<ElemType> &point) {
+uber::KdTree<ElemType, Partition>::findNearestNighbor(const Point<ElemType> &point) {
   // backtrack of nodes
   BtStack<ElemType> btStack;
   std::set<KdTreeNodePtr<ElemType>> visited;
   // find leaf node
+  // std::cout << "Root: " << root_ << "\n";
   KdTreeNodePtr<ElemType> leaf = findLeafPoint(root_, point, btStack);
   Point<ElemType> &curNearPoint = nearPoint(leaf, point);
   ElemType curDist = calcDist(point, curNearPoint);
@@ -403,7 +459,7 @@ uber::KdTree<ElemType>::findNearestNighbor(const Point<ElemType> &point) {
   return curNearPoint;
 }
 
-template <typename ElemType>
-int uber::KdTree<ElemType>::save() {
+template <typename ElemType, typename Partition>
+int uber::KdTree<ElemType, Partition>::save() {
   return 0;
 }
