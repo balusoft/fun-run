@@ -29,6 +29,57 @@ std::ostream& operator<<(std::ostream& ostr, const std::vector<T>& point) {
   ostr << "]";
   return ostr;
 }
+/**
+ Assume elements are comma separated
+ no white spaces for reducing complexity
+ 1) get string line
+ 2) first line must be [ and endline must be]
+ 3) convert comma to space and [] to space
+ 4) ignore spaces front and rear
+ 5) pushback string by string to vector
+*/
+template <typename T>
+std::istream& operator>>(std::istream& istr, std::vector<T>& v) {
+  auto beg = istr.tellg();
+  char c;
+  istr >> c;
+  if (c != '[') {
+    istr.seekg(beg, istr.beg);
+    return istr;
+  }
+  auto beg2 = istr.tellg();
+  if (istr >> c) {
+    if (c == ']') {
+      return istr;
+    } else {
+      istr.seekg(beg2, istr.beg);
+    }
+  }
+  while(true) {
+    T t;
+    if (istr >> t) {
+      v.push_back(t);
+      istr >> c;
+      if(c == ',') {
+        continue;
+      } else if (c == ']') {
+        break;
+      } else {
+        istr.seekg(beg, istr.beg);
+        return istr;
+      }
+    } else {
+      istr >> c;
+      if (c == ']') {
+        break;
+      } else {
+        istr.seekg(beg, istr.beg);
+        return istr;
+      }
+    }
+  }
+  return istr;
+}
 // Define KdTreeNodePtr
 template <typename ElemType>
 class KdTreeNode;
@@ -61,17 +112,23 @@ public:
   inline void addPoint(const Point<ElemType> &point) {
     points_.push_back(point);
   }
+  inline void setPoints(const std::vector<Point<ElemType>> &points) {
+    points_ = points;
+  }
   inline std::vector<Point<ElemType>> &points() { return points_; }
   inline void setLeaf(const bool isLeaf) { leaf_ = isLeaf; }
   inline bool isLeaf() const { return leaf_; }
+  inline void setInited(const bool inited) { inited_ = inited; }
+  inline bool isInited() const { return inited_; };
 
 private:
   std::vector<Point<ElemType>> points_;
-  KdTreeNodePtr<ElemType> left_; // values < slicePoint
-  KdTreeNodePtr<ElemType> right_; // values >= slicePoint
   size_t dimension_;
   ElemType slicePoint_;
   bool leaf_;
+  bool inited_;
+  KdTreeNodePtr<ElemType> left_; // values < slicePoint
+  KdTreeNodePtr<ElemType> right_; // values >= slicePoint
 };
 
 template <typename ElemType> class MedianPartition {
@@ -85,37 +142,159 @@ private:
                     const size_t endIdx);
 };
 
+/*
+ Format is {slicePoint,isLeaf,Dim,Points,leftSubTree,rightSubTree}
+ */
 template <typename ElemType>
-std::ostream& operator<<(std::ostream& ostr, const KdTreeNodePtr<ElemType> node) {
+std::ostream &operator<<(std::ostream &ostr,
+                         const KdTreeNodePtr<ElemType> &node) {
   if (!node) {
-    ostr << "{null}";
+    ostr << "{}";
     return ostr;
   }
   ostr << "{";
-  ostr << "point=" << node->points() << ";";
-  ostr << "slicePoint=" << node->slicePoint() << ";";
-  ostr << std::boolalpha << "isleaf= " << node->isLeaf() << ";";
-  ostr << "dim=" << node->dimension() << ";";
-  ostr << "left" << node->left();
-  ostr << "right" << node->right();
+  ostr << node->slicePoint() << ",";
+  ostr << node->dimension() << ",";
+  ostr << node->isLeaf() << ",";
+  ostr << node->points() << ",";
+  ostr << node->left() << ",";
+  ostr << node->right();
   ostr << "}";
   return ostr;
 }
+/*
+ Format is {slicePoint,isLeaf,Dim,Points,leftSubTree,rightSubTree}
+ */
+template <typename ElemType>
+std::istream &operator>>(std::istream &istr, KdTreeNodePtr<ElemType> &curNode) {
+  if (!curNode) {
+    return istr;
+  }
+  auto beg = istr.tellg();
+  char c;
+  if (!(istr >> c) || (c != '{')) {
+    istr.seekg(beg, istr.beg);
+    return istr;
+  }
+
+  auto beg2 = istr.tellg();
+  if (istr >> c) {
+    if (c == '}') {
+      return istr;
+    } else {
+      istr.seekg(beg2, istr.beg);
+    }
+  }
+  bool fail = true;
+  while (true) {
+    // slicePoint
+    size_t slicePoint = 0;
+    if (istr >> slicePoint) {
+      curNode->setSlicePoint(slicePoint);
+    } else {
+      break;
+    }
+    // comma
+    char comma = 0;
+    if (!(istr >> comma) || (',' != comma)) {
+      break;
+    }
+    // Dim
+    size_t dim = 0;
+    if (istr >> dim) {
+      curNode->setDimension(dim);
+    } else {
+      break;
+    }
+    // comma
+    comma = 0;
+    if (!(istr >> comma) || (',' != comma)) {
+      break;
+    }
+    // isLeaf
+    bool isLeaf = false;
+    if (istr >> isLeaf) {
+      curNode->setLeaf(isLeaf);
+    } else {
+      break;
+    }
+    // comma
+    comma = 0;
+    if (!(istr >> comma) || (',' != comma)) {
+      break;
+    }
+    // Points
+    std::vector<Point<ElemType>> points;
+    if (istr >> points) {
+      curNode->setPoints(points);
+    } else {
+      break;
+    }
+    // comma
+    comma = 0;
+    if (!(istr >> comma) || (',' != comma)) {
+      break;
+    }
+    // Left node
+    auto leftNode = std::make_shared<KdTreeNode<ElemType>>();
+    if (istr >> leftNode) {
+      if (leftNode->isInited()) {
+        curNode->setLeft(leftNode);
+      }
+    } else {
+      break;
+    }
+    // comma
+    comma = 0;
+    if (!(istr >> comma) || (',' != comma)) {
+      break;
+    }
+    // Right node
+    auto rightNode = std::make_shared<KdTreeNode<ElemType>>();
+    if (istr >> rightNode) {
+      if (rightNode->isInited()) {
+        curNode->setRight(rightNode);
+      }
+    } else {
+      break;
+    }
+    // end }
+    if (!(istr >> c) || (c != '}')) {
+      istr.seekg(beg, istr.beg);
+      return istr;
+    }
+    // last
+    fail = false;
+    curNode->setInited(true);
+    break;
+  }
+  if (fail) {
+    istr.seekg(beg, istr.beg);
+    return istr;
+  }
+  return istr;
+}
+
 template <typename ElemType>
 using BtTuple = std::tuple<KdTreeNodePtr<ElemType>, bool>;
 template <typename ElemType>
 using BtStack = std::stack<BtTuple<ElemType>>;
-//template <typename ElemType, template<typename> class Partition = MedianPartition>
+
 template <typename ElemType, typename Partition = MedianPartition<ElemType>>
 class KdTree : public ArithmeticTemplate<ElemType> {
 public:
   KdTree();
-  KdTree(const std::string &filepath);
   void insert(const std::vector<Point<ElemType>>& points);
   const Point<ElemType>& findNearestNighbor(const Point<ElemType>& point);
-  int save();
-  size_t size() const { return size_; }
-  size_t sliceNodesCount() const { return sliceNodesCount_; }
+
+  inline KdTreeNodePtr<ElemType> root() { return root_; }
+  inline void setRoot(KdTreeNodePtr<ElemType> root) { root_ = root; }
+  inline size_t size() const { return size_; }
+  inline void setSize(const size_t size) { size_ = size; }
+  inline size_t sliceNodesCount() const { return sliceNodesCount_; }
+  inline void setSliceNodesCount(const size_t sliceNodesCount) {
+    sliceNodesCount_ = sliceNodesCount;
+  }
 
 private:
   KdTreeNodePtr<ElemType> buildPartitions(std::vector<Point<ElemType>> &points,
@@ -139,14 +318,109 @@ private:
   std::shared_ptr<KdTreeNode<ElemType>> root_;
   size_t sliceNodesCount_;
   size_t size_;
-  //Partition<ElemType> partition;
   Partition partition;
 };
+
+template <typename ElemType, typename Partition = MedianPartition<ElemType>>
+using KdTreePtr = std::shared_ptr<KdTree<ElemType, Partition>>;
+
+/*
+ format: {sliceNodesCount,size,rootNode}
+ */
+template <typename ElemType, typename Partition>
+std::ostream &operator<<(std::ostream &ostr,
+                         const KdTreePtr<ElemType, Partition> &tree) {
+  if (!tree) {
+    ostr << "{}";
+    return ostr;
+  }
+  ostr << "{";
+  ostr << tree->sliceNodesCount() << ",";
+  ostr << tree->size() << ",";
+  ostr << tree->root();
+  ostr << "}";
+  return ostr;
+}
+/*
+ format: {sliceNodesCount,size,rootNode}
+ */
+template <typename ElemType, typename Partition>
+std::istream &operator>>(std::istream &istr,
+                         KdTreePtr<ElemType, Partition> &tree) {
+  if (!tree) {
+    return istr;
+  }
+  auto beg = istr.tellg();
+  char c;
+  istr >> c;
+  if (c != '{') {
+    istr.seekg(beg, istr.beg);
+    return istr;
+  }
+  auto beg2 = istr.tellg();
+  if (istr >> c) {
+    if (c == '}') {
+      return istr;
+    } else {
+      istr.seekg(beg2, istr.beg);
+    }
+  }
+  bool fail = true;
+  while (true) {
+    // sliceNodesCount
+    size_t sliceNodesCount = 0;
+    if (istr >> sliceNodesCount) {
+      tree->setSliceNodesCount(sliceNodesCount);
+    } else {
+      break;
+    }
+    // comma
+    char comma = 0;
+    if (!(istr >> comma) || (',' != comma)) {
+      break;
+    }
+    // size
+    size_t size = 0;
+    if (istr >> size) {
+      tree->setSize(size);
+    } else {
+      break;
+    }
+    // comma
+    comma = 0;
+    if (!(istr >> comma) || (',' != comma)) {
+      break;
+    }
+    // root
+    auto rootNode = std::make_shared<KdTreeNode<ElemType>>();
+    if (istr >> rootNode) {
+      if (rootNode->isInited()) {
+        tree->setRoot(rootNode);
+      }
+    } else {
+      break;
+    }
+    // end }
+    if (!(istr >> c) || (c != '}')) {
+      istr.seekg(beg, istr.beg);
+      return istr;
+    }
+    // last
+    fail = false;
+    break;
+  }
+  if (fail) {
+    istr.seekg(beg, istr.beg);
+    return istr;
+  }
+  return istr;
 }
 
+}//namespace uber
 template <typename ElemType>
 uber::KdTreeNode<ElemType>::KdTreeNode()
-    : dimension_(0), slicePoint_(0), leaf_(false) {}
+    : dimension_(0), slicePoint_(),
+      leaf_(false),inited_(false) {}
 
 template <typename ElemType>
 size_t uber::MedianPartition<ElemType>::
@@ -202,9 +476,6 @@ template <typename ElemType, typename Partition>
 uber::KdTree<ElemType, Partition>::KdTree()
     : sliceNodesCount_(0), size_(0), partition() {}
 
-template <typename ElemType, typename Partition>
-uber::KdTree<ElemType, Partition>::KdTree(const std::string &filepath) {}
-
 /**
  Insert list of points into KD tree
  */
@@ -232,6 +503,7 @@ void uber::KdTree<ElemType, Partition>::insert(const Point<ElemType> &point) {
   if (!itr->isLeaf()) {
     size_t dim = itr->dimension();
     auto node =  std::make_shared<KdTreeNode<ElemType>>();
+    node->setInited(true);
     node->setLeaf(true);
     if (point[dim] <= itr->slicePoint()) {
       itr->setLeft(node);
@@ -265,6 +537,7 @@ uber::KdTreeNodePtr<ElemType> uber::KdTree<ElemType, Partition>::buildPartitions
   ElemType sliceValue = std::get<2>(partitionRes);
   ++sliceNodesCount_;
   KdTreeNodePtr<ElemType> curNode = std::make_shared<KdTreeNode<ElemType>>();
+  curNode->setInited(true);
   curNode->setSlicePoint(sliceValue);
   curNode->setDimension(dimension);
   // Init recursively left and right subtrees
@@ -459,7 +732,3 @@ uber::KdTree<ElemType, Partition>::findNearestNighbor(const Point<ElemType> &poi
   return curNearPoint;
 }
 
-template <typename ElemType, typename Partition>
-int uber::KdTree<ElemType, Partition>::save() {
-  return 0;
-}
