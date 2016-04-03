@@ -85,9 +85,14 @@ template <typename ElemType>
 class KdTreeNode;
 template <typename ElemType>
 using KdTreeNodePtr = std::shared_ptr<KdTreeNode<ElemType>>;
+struct NonCopyable {
+  NonCopyable &operator=(const NonCopyable &) = delete;
+  NonCopyable(const NonCopyable &) = delete;
+  NonCopyable() = default;
+};
 
 template <typename ElemType>
-class ArithmeticTemplate {
+class ArithmeticTemplate : NonCopyable {
 public:
   static_assert(std::is_arithmetic<ElemType>::value,
                 "Required to be integer or floating point primitive types");

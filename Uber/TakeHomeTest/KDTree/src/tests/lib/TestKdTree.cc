@@ -1,5 +1,5 @@
 // Unit test for KdTree
-#include <KDTree.hpp>
+#include <lib/KDTree.hpp>
 #include <cxxtest/TestSuite.h>
 #include <string>
 using namespace uber;

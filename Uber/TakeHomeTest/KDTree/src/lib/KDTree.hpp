@@ -1,6 +1,9 @@
 /*
 Uber Take Home Test
 */
+#ifndef _UBER_LIB_KDTREE_HPP_
+#define _UBER_LIB_KDTREE_HPP_
+
 #include <algorithm>
 #include <cassert>
 #include <vector>
@@ -352,8 +355,8 @@ std::istream &operator>>(std::istream &istr,
   }
   auto beg = istr.tellg();
   char c;
-  istr >> c;
-  if (c != '{') {
+  ;
+  if (!(istr >> c) || c != '{') {
     istr.seekg(beg, istr.beg);
     return istr;
   }
@@ -732,3 +735,4 @@ uber::KdTree<ElemType, Partition>::findNearestNighbor(const Point<ElemType> &poi
   return curNearPoint;
 }
 
+#endif //_UBER_LIB_KDTREE_HPP_
