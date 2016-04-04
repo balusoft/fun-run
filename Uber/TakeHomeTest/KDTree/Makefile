@@ -1,6 +1,5 @@
-
-CXX=/usr/bin/g++
 CXX=/usr/bin/clang++-3.6
+CXX=/usr/bin/g++
 CXXTESTGEN=./cxxtest-4.3/bin/cxxtestgen
 VALGRIND=/usr/bin/valgrind
 TEST_BIN=bin/test_kdtree
