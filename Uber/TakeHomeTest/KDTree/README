@@ -1,0 +1,78 @@
+This contains source code for KdTree build_kdtree, query_kdtree applications and its library APIs
+
+Source Tree:
+------------
+Here is the source code tree structure
+ROOT
+|
+|- lib
+|  - KDTree.hpp => Contains APIs for insert, find nearest neighbor APIs
+|
+|- build_kdtree
+|  - Contains source code for build_kdtree application
+|
+|- query_kdtree
+|  - Contains source code for query kdtree application
+|
+|- gen
+|  - Make generated directory contains generated files like Unit Test files.
+|
+|- bin
+|  - build_kdtree --> this application generated KD tree for given data points(CSV).
+|                     Takes additional input as path of tree file.
+|
+|  - query_kdtree --> this application searches provided Points from points CSV file
+|                     And generates the output as [nearest-point],distance. Takes
+|                     Additional input as <treePathName> and <resultFilePath> to store
+|                     results.
+|
+|  - test_XXX     --> Various Unit Test binaries which generated during build process to
+|                     test libraries and applications
+
+System requirements:
+--------------------
+
+1) Vanilla Ubuntu 14.04:
+
+balajic@balajic-VirtualBox:~$ uname -a
+Linux balajic-VirtualBox 3.19.0-30-generic #34~14.04.1-Ubuntu SMP Fri Oct 2 22:09:39 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
+balajic@balajic-VirtualBox:~$ 
+
+2) /usr/bin/g++
+balajic@balajic-VirtualBox:~$ g++ --version
+g++ (Ubuntu 4.8.4-2ubuntu1~14.04.1) 4.8.4
+Copyright (C) 2013 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+3) /usr/bin/make
+
+balajic@balajic-VirtualBox:~$ make --version
+GNU Make 3.81
+Copyright (C) 2006  Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+
+This program built for x86_64-pc-linux-gnu
+
+4) /usr/bin/valgrind
+
+balajic@balajic-VirtualBox:~$ valgrind --version
+valgrind-3.10.1
+
+Additional resources used:
+--------------------------
+
+1) CxxTest, for unit test purpose, source code is already added in GoogleDrive to make build work.
+   For more details refer here: http://cxxtest.com/
+
+
+Quality:
+--------
+1) All code is Unit Tested by using CxxTest automation
+2) All unit tests are ran against valgrind to find memory errors.
+
+How to Build:
+-------------
+From current directory simply run 'make' or 'make -f Makefile'
