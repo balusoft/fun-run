@@ -36,11 +36,19 @@ public:
     TS_ASSERT_EQUALS(tree.sliceNodesCount(), points.size());
     // search elements
     const Point<double> nearPoint1{3.0, 4.0};
-    TS_ASSERT_EQUALS(tree.findNearestNighbor({3.1, 4.0}), nearPoint1);
+    auto rnp1 = tree.findNearestNighbor({3.1, 4.0});
+    TS_ASSERT_EQUALS(std::get<0>(rnp1), nearPoint1);
+    //TS_ASSERT_EQUALS(std::get<1>(rnp1), 0.0100);
+
     const Point<double> nearPoint2{0.1, 0.3};
-    TS_ASSERT_EQUALS(tree.findNearestNighbor({1.0, 2.0}), nearPoint2);
+    auto rnp2 = tree.findNearestNighbor({1.0, 2.0});
+    TS_ASSERT_EQUALS(std::get<0>(rnp2), nearPoint2);
+    //TS_ASSERT_EQUALS(std::get<1>(rnp2), 3.7000);
+
     const Point<double> nearPoint3{0.0, 10.2};
-    TS_ASSERT_EQUALS(tree.findNearestNighbor({0.0, 10.2}), nearPoint3);
+    auto rnp3 = tree.findNearestNighbor({0.0, 10.2});
+    TS_ASSERT_EQUALS(std::get<0>(rnp3), nearPoint3);
+    TS_ASSERT_EQUALS(std::get<1>(rnp3), 0);
   }
   void test_constructor_double_serialize() {
     KdTreePtr<double> tree=std::make_shared<KdTree<double>>();

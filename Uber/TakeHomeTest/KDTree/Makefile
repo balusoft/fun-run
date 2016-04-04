@@ -9,11 +9,12 @@ TEST_QUERY_KDTREE_BIN=bin/test_query_kdtree
 BUILD_APP_BIN=bin/build_kdtree
 QUERY_APP_BIN=bin/query_kdtree
 
-all : run_tests build_kdtree
+all : run_tests build_kdtree query_kdtree
 
-run_tests : get_lib_test_binary get_build_kdtree_test_binary
+run_tests : get_lib_test_binary get_build_kdtree_test_binary get_query_kdtree_test_binary
 	$(VALGRIND) ./$(TEST_BIN)
 	$(VALGRIND) ./$(TEST_BUILD_KDTREE_BIN)
+	$(VALGRIND) ./$(TEST_QUERY_KDTREE_BIN)
 
 get_lib_test_binary: src/lib/KDTree.hpp gen_tests
 	mkdir -p ./bin
@@ -37,6 +38,20 @@ build_kdtree: get_lib_test_binary gen_build_kdtree_tests
 	mkdir -p ./bin
 	$(CXX) -I ./src -I ./cxxtest-4.3/ -g -Werror -std=c++11 -o $(BUILD_APP_BIN) \
 		 src/build_kdtree/BuildKdTree.cc src/build_kdtree/BuildKdTreeMain.cc
+
+get_query_kdtree_test_binary: get_lib_test_binary gen_query_kdtree_tests
+	mkdir -p ./bin
+	$(CXX) -I ./src -I ./cxxtest-4.3/ -g -Werror -std=c++11 -o $(TEST_QUERY_KDTREE_BIN) \
+		gen/GenTestQueryKdTree.cc src/query_kdtree/QueryKdTree.cc src/build_kdtree/BuildKdTree.cc
+
+gen_query_kdtree_tests: src/tests/query_kdtree/TestQueryKdTree.cc
+	mkdir -p ./gen
+	$(CXXTESTGEN) --error-printer -o gen/GenTestQueryKdTree.cc src/tests/query_kdtree/TestQueryKdTree.cc
+
+query_kdtree: get_lib_test_binary gen_query_kdtree_tests
+	mkdir -p ./bin
+	$(CXX) -I ./src -I ./cxxtest-4.3/ -g -Werror -std=c++11 -o $(QUERY_APP_BIN) \
+		 src/query_kdtree/QueryKdTree.cc src/query_kdtree/QueryKdTreeMain.cc
 
 clean:
 	rm -rf ./bin

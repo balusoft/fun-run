@@ -106,10 +106,10 @@ public:
   inline std::shared_ptr<KdTreeNode> right() const { return right_; }
   inline void setLeft(const std::shared_ptr<KdTreeNode> &left) { left_ = left; }
   inline std::shared_ptr<KdTreeNode> left() const { return left_; }
-  inline void setSlicePoint(const ElemType &slice) {
+  inline void setSlicePoint(const double slice) {
     slicePoint_ = slice;
   }
-  inline const ElemType &slicePoint() const { return slicePoint_; }
+  inline double slicePoint() const { return slicePoint_; }
   inline void setDimension(const size_t dimension) { dimension_ = dimension; }
   inline size_t dimension() const { return dimension_; }
   inline void addPoint(const Point<ElemType> &point) {
@@ -127,7 +127,7 @@ public:
 private:
   std::vector<Point<ElemType>> points_;
   size_t dimension_;
-  ElemType slicePoint_;
+  double slicePoint_;
   bool leaf_;
   bool inited_;
   KdTreeNodePtr<ElemType> left_; // values < slicePoint
@@ -191,7 +191,7 @@ std::istream &operator>>(std::istream &istr, KdTreeNodePtr<ElemType> &curNode) {
   bool fail = true;
   while (true) {
     // slicePoint
-    size_t slicePoint = 0;
+    double slicePoint = 0;
     if (istr >> slicePoint) {
       curNode->setSlicePoint(slicePoint);
     } else {
@@ -288,7 +288,8 @@ class KdTree : public ArithmeticTemplate<ElemType> {
 public:
   KdTree();
   void insert(const std::vector<Point<ElemType>>& points);
-  const Point<ElemType>& findNearestNighbor(const Point<ElemType>& point);
+  const std::tuple<Point<ElemType>, double>
+  findNearestNighbor(const Point<ElemType> &point);
 
   inline KdTreeNodePtr<ElemType> root() { return root_; }
   inline void setRoot(KdTreeNodePtr<ElemType> root) { root_ = root; }
@@ -323,6 +324,14 @@ private:
   size_t size_;
   Partition partition;
 };
+
+template <typename ElemType>
+std::ostream &operator<<(std::ostream &ostr,
+                         const std::tuple<uber::Point<ElemType>, double> &nn) {
+  ostr << std::get<0>(nn) << ",";
+  ostr << std::get<1>(nn);
+  return ostr;
+}
 
 template <typename ElemType, typename Partition = MedianPartition<ElemType>>
 using KdTreePtr = std::shared_ptr<KdTree<ElemType, Partition>>;
@@ -422,7 +431,7 @@ std::istream &operator>>(std::istream &istr,
 }//namespace uber
 template <typename ElemType>
 uber::KdTreeNode<ElemType>::KdTreeNode()
-    : dimension_(0), slicePoint_(),
+    : dimension_(0), slicePoint_(0.0),
       leaf_(false),inited_(false) {}
 
 template <typename ElemType>
@@ -688,8 +697,10 @@ uber::KdTree<ElemType, Partition>::nearPoint(const KdTreeNodePtr<ElemType> &node
     3.3) if you find closer point update it as current best point
  */
 template <typename ElemType, typename Partition>
-const uber::Point<ElemType>&
-uber::KdTree<ElemType, Partition>::findNearestNighbor(const Point<ElemType> &point) {
+const std::tuple<uber::Point<ElemType>, double>
+uber::KdTree<ElemType, Partition>::findNearestNighbor(
+    const Point<ElemType> &point) {
+  assert(!point.empty());
   // backtrack of nodes
   BtStack<ElemType> btStack;
   std::set<KdTreeNodePtr<ElemType>> visited;
@@ -732,7 +743,8 @@ uber::KdTree<ElemType, Partition>::findNearestNighbor(const Point<ElemType> &poi
       }
     }
   }
-  return curNearPoint;
+  //std::cout << "*******curdist: " << sqrt(curDist) << "\n";
+  return std::make_tuple(curNearPoint, sqrt(curDist));
 }
 
 #endif //_UBER_LIB_KDTREE_HPP_

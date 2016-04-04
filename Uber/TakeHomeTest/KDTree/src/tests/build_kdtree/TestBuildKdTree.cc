@@ -4,6 +4,7 @@
 #include <cxxtest/TestSuite.h>
 #include <unistd.h>
 #include <string>
+#include <cstdio>
 using namespace uber;
 class TestBuildKdTree : public CxxTest::TestSuite {
 public:
@@ -14,7 +15,7 @@ public:
         treeFile_(cwd_ + "/gen/TestBuildKdTree.tree") {
   }
   ~TestBuildKdTree() {
-    //(void)std::remove(treeFile_);
+    (void)std::remove(treeFile_.c_str());
   }
   void test_build() {
     BuildKdTree::build(dataFile_, treeFile_);
@@ -25,6 +26,7 @@ public:
     // 1000 is number of points
     TS_ASSERT_EQUALS(tree->size(), 1000);
     TS_ASSERT_EQUALS(tree->sliceNodesCount(), 1000);
+    //std::cout << "*****8888 tree " << tree << "\n";
   }
 private:
   std::string cwd_;
