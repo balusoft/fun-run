@@ -16,8 +16,8 @@ public:
         queryResultsFile_(cwd_ + "/gen/TestQueryKdTreeQueRes.csv"),
         treeFile_(cwd_ + "/gen/TestQueryKdTree.tree") {}
   ~TestQueryKdTree() {
-    //(void) std::remove(queryResultsFile_.c_str());
-    //(void) std::remove(treeFile_.c_str());
+    (void) std::remove(queryResultsFile_.c_str());
+    (void) std::remove(treeFile_.c_str());
   }
 
   void test_query() {

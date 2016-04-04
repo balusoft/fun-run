@@ -3,14 +3,9 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <lib/Noncopyable.hpp>
 namespace uber {
-struct NonCopyable {
-  NonCopyable &operator=(const NonCopyable &) = delete;
-  NonCopyable(const NonCopyable &) = delete;
-  NonCopyable() = default;
-};
-
-class Istream : public NonCopyable {
+class Istream : public Noncopyable {
 public:
   Istream(const std::string &filename)
       : ifstr_(filename), filename_(filename) {
@@ -28,7 +23,7 @@ private:
   std::string filename_;
 };
 
-class Ostream : public NonCopyable {
+class Ostream : public Noncopyable {
 public:
   Ostream(const std::string &filename)
       : ofstr_(filename, std::ios::out | std::ios::trunc), filename_(filename) {
