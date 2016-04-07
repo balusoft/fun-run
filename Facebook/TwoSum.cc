@@ -24,6 +24,22 @@ using namespace std;
 class Solution {
 public:
   vector<int> twoSum(const vector<int> &nums, int target) {
+    unordered_map<int, int> map;
+    for (int idx=0; idx<nums.size(); ++idx) {
+      int secondKey = target - nums[idx];
+      if (map.find(secondKey) == map.end()) {
+        map[nums[idx]] = idx;
+      } else {
+        int secIdx = map[secondKey];
+        if (idx != secIdx) {
+          return vector<int>({secIdx, idx});
+        }
+      }
+    }
+    return vector<int>();
+  }
+
+  vector<int> twoSumOld(const vector<int> &nums, int target) {
     unordered_map<int, size_t> map;
     for (size_t idx=0; idx<nums.size(); ++idx) {
       map[nums[idx]] = idx;
