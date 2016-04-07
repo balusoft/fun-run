@@ -1,9 +1,9 @@
-125 Valid Palindrome  23.70%  Easy
-1 Two Sum 22.60%  Easy
-206 Reverse Linked List 39.10%  Easy
-26  Remove Duplicates from Sorted Array 33.30%  Easy
-283 Move Zeroes 43.90%  Easy
-88  Merge Sorted Array  30.00%  Easy
+125 Valid Palindrome                                         23.70%  Easy DONE
+1 Two Sum                                                    22.60%  Easy DONE
+206 Reverse Linked List                                      39.10%  Easy DONE
+26  Remove Duplicates from Sorted Array                      33.30%  Easy DONE
+283 Move Zeroes                                              43.90%  Easy DONE
+88  Merge Sorted Array                                       30.00%  Easy DONE
 252 Meeting Rooms   41.60%  Easy
 235 Lowest Common Ancestor of a Binary Search Tree  37.80%  Easy
 28  Implement strStr()  24.70%  Easy
