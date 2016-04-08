@@ -7,11 +7,11 @@
 235 Lowest Common Ancestor of a Binary Search Tree           37.80%  Easy DONE
 278 First Bad Version                                        22.20%  Easy DONE
 168 Excel Sheet Column Title                                 21.50%  Easy DONE
-38  Count and Say 28.70%  Easy
-257 Binary Tree Paths 28.10%  Easy
-102 Binary Tree Level Order Traversal 32.50%  Easy
-67  Add Binary  27.20%  Easy
-28  Implement strStr()  24.70%  Easy
+38  Count and Say                                            28.70%  Easy DONE
+257 Binary Tree Paths                                        28.10%  Easy
+102 Binary Tree Level Order Traversal                        32.50%  Easy
+67  Add Binary                                               27.20%  Easy
+28  Implement strStr()                                       24.70%  Easy
 252 Meeting Rooms                                            41.60%  Easy LOCKED
 
 297 Serialize and Deserialize Binary Tree 27.50%  Hard
