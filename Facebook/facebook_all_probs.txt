@@ -14,18 +14,6 @@
 28  Implement strStr()                                       24.70%  Easy
 252 Meeting Rooms                                            41.60%  Easy LOCKED
 
-297 Serialize and Deserialize Binary Tree 27.50%  Hard
-33  Search in Rotated Sorted Array  30.20%  Hard
-25  Reverse Nodes in k-Group  27.40%  Hard
-301 Remove Invalid Parentheses  31.60%  Hard
-10  Regular Expression Matching 21.80%  Hard
-158 Read N Characters Given Read4 II - Call multiple times  23.40%  Hard
-117 Populating Next Right Pointers in Each Node II  32.70%  Hard
-265 Paint House II  35.50%  Hard
-76  Minimum Window Substring  21.00%  Hard
-23  Merge k Sorted Lists  23.20%  Hard
-273 Integer to English Words  18.60%  Hard
-269 Alien Dictionary  22.70%  Hard
 79  Word Search 22.80%  Medium
 286 Walls and Gates   36.90%  Medium
 78  Subsets 31.20%  Medium
@@ -57,3 +45,16 @@
 49  Group Anagrams  27.20%  Medium
 211 Add and Search Word - Data structure design 20.30%  Medium
 15  3Sum  18.70%  Medium
+
+297 Serialize and Deserialize Binary Tree 27.50%  Hard
+33  Search in Rotated Sorted Array  30.20%  Hard
+25  Reverse Nodes in k-Group  27.40%  Hard
+301 Remove Invalid Parentheses  31.60%  Hard
+10  Regular Expression Matching 21.80%  Hard
+158 Read N Characters Given Read4 II - Call multiple times  23.40%  Hard
+117 Populating Next Right Pointers in Each Node II  32.70%  Hard
+265 Paint House II  35.50%  Hard
+76  Minimum Window Substring  21.00%  Hard
+23  Merge k Sorted Lists  23.20%  Hard
+273 Integer to English Words  18.60%  Hard
+269 Alien Dictionary  22.70%  Hard
