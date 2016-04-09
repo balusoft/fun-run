@@ -11,13 +11,13 @@
 257 Binary Tree Paths                                        28.10%  Easy DONE
 102 Binary Tree Level Order Traversal                        32.50%  Easy DONE
 67  Add Binary                                               27.20%  Easy DONE
-28  Implement strStr()                                       24.70%  Easy
-252 Meeting Rooms                                            41.60%  Easy LOCKED
+28  Implement strStr()                                   24.70%  Easy
+252 Meeting Rooms                                        41.60%  Easy LOCKED
 
-79  Word Search 22.80%  Medium
-286 Walls and Gates   36.90%  Medium
-78  Subsets 31.20%  Medium
-69  Sqrt(x) 25.10%  Medium
+79  Word Search                                          22.80%  Medium DONE
+286 Walls and Gates                                      36.90%  Medium LOCKED
+78  Subsets                                              31.20%  Medium DONE
+69  Sqrt(x)                                              25.10%  Medium DONE
 75  Sort Colors 34.50%  Medium
 80  Remove Duplicates from Sorted Array II  32.60%  Medium
 238 Product of Array Except Self  42.30%  Medium
