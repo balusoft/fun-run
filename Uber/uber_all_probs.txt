@@ -1,6 +1,6 @@
 Uber Show problem tags
  #    Title                                 Acceptance Difficulty
- 4    Median of Two Sorted Arrays           18.3% Hard
+ 4    Median of Two Sorted Arrays           18.3% Hard    COMPLETED
  140  Word Break II                         19.5% Hard
  138  Copy List with Random Pointer         26.0% Hard    COMPLETED
  146  LRU Cache                             15.7% Hard
