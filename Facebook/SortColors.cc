@@ -9,9 +9,59 @@ and blue respectively.
 #include <vector>
 #include <cxxtest/TestSuite.h>
 
+template <typename T>
+std::ostream& operator <<(std::ostream& ostr, const std::vector<T> &v) {
+  bool isBegin=true;
+  ostr << "{ ";
+  for (auto &e : v) {
+    if (isBegin) {
+      isBegin = false;
+    } else {
+      ostr <<", ";
+    }
+    ostr << e;
+  }
+  ostr << "}";
+  return ostr;
+}
 class Solution {
 public:
   void sortColors(std::vector<int> &nums) {
+    sortColors2(nums);
+  }
+
+  void sortColors2(std::vector<int> &nums) {
+    int rc=0;
+    int bc=nums.size() - 1;
+    int i=0;
+    int swp=0;
+    while (i<=bc) {
+      if (nums[i] == 0) {
+        if (i == rc) {
+          ++rc;
+          ++i;
+        } else {
+          swp = nums[i];
+          nums[i] = nums[rc];
+          nums[rc++] = swp;
+        }
+      } else if (nums[i]==2) {
+        if (i == bc) {
+          --bc;
+          ++i;
+        } else {
+          swp = nums[i];
+          nums[i] = nums[bc];
+          nums[bc--] = swp;
+        }
+      } else {
+        ++i;
+      }
+      //std::cout << rc << ":" << bc << ":" << i << ":" << nums << "\n";
+    }
+  }
+
+  void sortColors1(std::vector<int> &nums) {
     std::vector<size_t> rwb(3, 0);
     for (int e : nums) {
       ++rwb[e];
