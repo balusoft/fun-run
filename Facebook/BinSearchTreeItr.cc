@@ -35,9 +35,7 @@ public:
     assert(hasNext());
     TreeNode *cur = bt.top();
     bt.pop();
-    if (cur->right) {
-      traverseLeft(cur->right, bt);
-    }
+    traverseLeft(cur->right, bt);
     return cur->val;
   }
 private:
