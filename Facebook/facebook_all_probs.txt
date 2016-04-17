@@ -42,8 +42,8 @@
 314 Binary Tree Vertical Order Traversal                 30.20%  Medium LOCKED
 275 H-Index II                                           32.40%  Medium DONE
 91  Decode Ways                                          17.40%  Medium DONE
-210 Course Schedule II                                   20.90%  Medium
-15  3Sum  18.70%  Medium
+210 Course Schedule II                                   20.90%  Medium DONE
+15  3Sum                                                 18.70%  Medium DONE
 211 Add and Search Word - Data structure design 20.30%  Medium
 
 33  Search in Rotated Sorted Array                  30.20%  Hard DONE
