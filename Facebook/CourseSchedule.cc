@@ -42,6 +42,15 @@ Subscribe to see which companies asked this question
 using Graph=std::vector<std::list<int>>;
 class Solution {
 public:
+  bool canFinish(int numCourses,
+                 const std::vector<std::pair<int, int>> &prerequisites) {
+    if (numCourses == 0) {
+      return false;
+    }
+    Graph g(numCourses);
+    makeGraph(numCourses, prerequisites, g);
+    return topologicalOrder(g).size() == numCourses;
+  }
   std::vector<int>
   findOrder(const int numCourses,
             const std::vector<std::pair<int, int>> &prerequisites) {
@@ -136,5 +145,14 @@ public:
     TS_ASSERT_EQUALS(s.findOrder(4, std::vector<std::pair<int, int>>(
                                         {{1, 0}, {2, 0}, {3, 1}, {3, 2}})),
                      std::vector<int>({0, 2, 1, 3}));
+    TS_ASSERT_EQUALS(
+        s.findOrder(2, std::vector<std::pair<int, int>>({{0, 1}, {1, 0}})),
+                     std::vector<int>({}));
+  }
+  void test_can_fin() {
+    Solution s;
+    TS_ASSERT_EQUALS(
+        s.canFinish(2, std::vector<std::pair<int, int>>({{0, 1}, {1, 0}})),
+        false);
   }
 };
