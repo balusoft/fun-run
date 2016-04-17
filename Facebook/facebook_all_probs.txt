@@ -39,10 +39,10 @@
 236 Lowest Common Ancestor of a Binary Tree              28.70%  Medium DONE
 261 Graph Valid Tree                                     32.50%  Medium LOCKED
 133 Clone Graph                                          24.80%  Medium DONE
-314 Binary Tree Vertical Order Traversal  30.20%  Medium
-275 H-Index II  32.40%  Medium
-91  Decode Ways 17.40%  Medium
-210 Course Schedule II  20.90%  Medium
+314 Binary Tree Vertical Order Traversal                 30.20%  Medium LOCKED
+275 H-Index II                                           32.40%  Medium DONE
+91  Decode Ways                                          17.40%  Medium DONE
+210 Course Schedule II                                   20.90%  Medium
 15  3Sum  18.70%  Medium
 211 Add and Search Word - Data structure design 20.30%  Medium
 
