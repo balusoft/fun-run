@@ -1,12 +1,12 @@
-257 Binary Tree Paths 28.10%  Easy
-270 Closest Binary Search Tree Value  34.10%  Easy
-293 Flip Game   49.60%  Easy
-249 Group Shifted Strings   31.40%  Easy
-155 Min Stack 21.90%  Easy
-276 Paint Fence   30.70%  Easy
-266 Palindrome Permutation  50.30%  Easy
-66  Plus One  33.30%  Easy
-326 Power of Three  36.00%  Easy
+257 Binary Tree Paths                 28.10%  Easy DONE
+270 Closest Binary Search Tree Value  34.10%  Easy LOCKED
+293 Flip Game                         49.60%  Easy LOCKED
+249 Group Shifted Strings             31.40%  Easy LOCKED
+155 Min Stack                         21.90%  Easy DONE
+276 Paint Fence                       30.70%  Easy LOCKED
+266 Palindrome Permutation            50.30%  Easy LOCKED
+66  Plus One                          33.30%  Easy DONE
+326 Power of Three                    36.00%  Easy
 246 Strobogrammatic Number  36.20%  Easy
 288 Unique Word Abbreviation  15.60%  Easy
 20  Valid Parentheses 29.20%  Easy
