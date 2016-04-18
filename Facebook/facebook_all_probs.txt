@@ -11,7 +11,7 @@
 257 Binary Tree Paths                                        28.10%  Easy DONE
 102 Binary Tree Level Order Traversal                        32.50%  Easy DONE
 67  Add Binary                                               27.20%  Easy DONE
-252 Meeting Rooms                                        41.60%  Easy LOCKED
+252 Meeting Rooms                                        41.60%  Easy DONE
 28  Implement strStr()                                   24.70%  Easy REPEAT
 
 79  Word Search                                          22.80%  Medium DONE
