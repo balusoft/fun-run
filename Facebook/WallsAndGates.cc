@@ -25,7 +25,47 @@ After running your function, the 2D grid should be:
 **/
 class Solution {
 public:
-    void wallsAndGates(vector<vector<int>>& rooms) {
-            
-                }
-                };
+  void wallsAndGates(vector<vector<int>> &rooms) {
+    // initialize with zero elements.
+    std::queue<std::tuple<int, int>> q;
+    for (int i = 0; i < rooms.size(); ++i) {
+      for (int j = 0; j < rooms[0].size(); ++j) {
+        if (rooms[i][j] == 0) {
+          q.push(std::make_tuple(i, j));
+        }
+      }
+    }
+
+    bfs(rooms, q);
+  }
+  void bfs(vector<vector<int>> &rooms, std::queue<std::tuple<int, int>> &q) {
+    while (!q.empty()) {
+      // Get the top of the element
+      int i, j;
+      std::tie(i, j) = q.front();
+      q.pop();
+      int nextVal = rooms[i][j] + 1;
+      int max = std::numeric_limits<int>::max();
+      // a b c  i-1,j-1  i-1,j   i-1,j+1
+      // x y z  i,  j-1  i,j     i,  j+1
+      // l m n  i+1,j-1  i+1,j   i+1,j+1
+      // check(i-1, j-1, rooms, q, nextVal);
+      check(i - 1, j, rooms, q, nextVal);
+      // check(i-1, j+1, rooms, q, nextVal);
+      check(i, j - 1, rooms, q, nextVal);
+      check(i, j + 1, rooms, q, nextVal);
+      // check(i+1, j-1, rooms, q, nextVal);
+      check(i + 1, j, rooms, q, nextVal);
+      // check(i+1, j+1, rooms, q, nextVal);
+    }
+  }
+  void check(const int i, const int j, vector<vector<int>> &rooms,
+             std::queue<std::tuple<int, int>> &q, const int nextVal) {
+    if ((i >= 0 && i <= rooms.size() - 1) &&
+        (j >= 0 && j <= rooms[0].size() - 1) &&
+        rooms[i][j] == std::numeric_limits<int>::max()) {
+      rooms[i][j] = nextVal;
+      q.push(std::make_tuple(i, j));
+    }
+  }
+};
