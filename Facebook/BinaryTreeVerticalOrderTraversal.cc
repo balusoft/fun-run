@@ -68,9 +68,50 @@ return its vertical order traversal as:
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
 class Solution {
 public:
-    vector<vector<int>> verticalOrder(TreeNode* root) {
-        
+  vector<vector<int>> verticalOrder(TreeNode *root) {
+    unordered_map<int, vector<int>> map;
+    bfs(root, map, 0);
+    std::set<int> keys;
+    for (auto &kv : map) {
+      keys.insert(kv.first);
     }
+    std::vector<std::vector<int>> res(keys.size());
+    int i = 0;
+    for (auto k : keys) {
+      res[i++] = map[k];
+    }
+    return res;
+  }
+  void bfs(TreeNode *root, unordered_map<int, vector<int>> &map, const int k) {
+    if (!root) {
+      return;
+    }
+    std::queue<std::tuple<TreeNode *, int>> q;
+    q.push(std::make_tuple(root, 0));
+    while (!q.empty()) {
+      TreeNode *cur;
+      int k;
+      std::tie(cur, k) = q.front();
+      q.pop();
+      map[k].push_back(cur->val);
+      if (cur->left) {
+        q.push(std::make_tuple(cur->left, k - 1));
+      }
+      if (cur->right) {
+        q.push(std::make_tuple(cur->right, k + 1));
+      }
+    }
+  }
 };
