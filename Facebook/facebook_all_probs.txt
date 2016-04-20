@@ -41,7 +41,7 @@
 91  Decode Ways                                          17.40%  Medium DONE
 210 Course Schedule II                                   20.90%  Medium DONE
 15  3Sum                                                 18.70%  Medium DONE
-161 One Edit Distance                                    28.30%  Medium
+161 One Edit Distance                                    28.30%  Medium DONE
 211 Add and Search Word - Data structure design          20.30%  Medium
 200 Number of Islands                                    27.40%  Medium REPEAT
 28  Implement strStr()                                   24.70%  Easy REPEAT
