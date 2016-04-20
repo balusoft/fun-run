@@ -12,7 +12,6 @@
 102 Binary Tree Level Order Traversal                        32.50%  Easy DONE
 67  Add Binary                                               27.20%  Easy DONE
 252 Meeting Rooms                                        41.60%  Easy DONE
-28  Implement strStr()                                   24.70%  Easy REPEAT
 
 79  Word Search                                          22.80%  Medium DONE
 286 Walls and Gates                                      36.90%  Medium DONE
@@ -26,7 +25,6 @@
 209 Minimum Size Subarray Sum                            26.60%  Medium DONE
 215 Kth Largest Element in an Array                      32.80%  Medium DONE
 274 H-Index                                              29.20%  Medium DONE
-200 Number of Islands                                    27.40%  Medium REPEAT
 121 Best Time to Buy and Sell Stock                      35.90%  Medium DONE
 253 Meeting Rooms II                                     34.50%  Medium DONE
 221 Maximal Square                                       23.40%  Medium DONE
@@ -45,6 +43,8 @@
 15  3Sum                                                 18.70%  Medium DONE
 161 One Edit Distance                                    28.30%  Medium
 211 Add and Search Word - Data structure design          20.30%  Medium
+200 Number of Islands                                    27.40%  Medium REPEAT
+28  Implement strStr()                                   24.70%  Easy REPEAT
 
 33  Search in Rotated Sorted Array                  30.20%  Hard DONE
 23  Merge k Sorted Lists                            23.20%  Hard REPEAT
