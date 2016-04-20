@@ -5,6 +5,7 @@
 //  Created by Balaji Cherukuri on 7/29/15.
 //  Copyright (c) 2015 FooBar. All rights reserved.
 //
+// http://jakeboxer.com/blog/2009/12/13/the-knuth-morris-pratt-algorithm-in-my-own-words/
 
 #include <string>
 #include <vector>
