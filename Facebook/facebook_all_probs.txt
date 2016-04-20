@@ -11,7 +11,7 @@
 257 Binary Tree Paths                                        28.10%  Easy DONE
 102 Binary Tree Level Order Traversal                        32.50%  Easy DONE
 67  Add Binary                                               27.20%  Easy DONE
-252 Meeting Rooms                                        41.60%  Easy DONE
+252 Meeting Rooms                                            41.60%  Easy DONE
 
 79  Word Search                                          22.80%  Medium DONE
 286 Walls and Gates                                      36.90%  Medium DONE
@@ -42,8 +42,8 @@
 210 Course Schedule II                                   20.90%  Medium DONE
 15  3Sum                                                 18.70%  Medium DONE
 161 One Edit Distance                                    28.30%  Medium DONE
-211 Add and Search Word - Data structure design          20.30%  Medium
-200 Number of Islands                                    27.40%  Medium REPEAT
+200 Number of Islands                                    27.40%  Medium DONE
+211 Add and Search Word - Data structure design          20.30%  Medium DONE
 28  Implement strStr()                                   24.70%  Easy REPEAT
 
 33  Search in Rotated Sorted Array                  30.20%  Hard DONE
