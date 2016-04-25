@@ -57,8 +57,8 @@
 279 Perfect Squares                                       32.20%  Medium DONE
 318 Maximum Product of Word Lengths                       39.40%  Medium DONE
 289 Game of Life                                          34.00%  Medium DONE
-320 Generalized Abbreviation                              40.40%  Medium
-230 Kth Smallest Element in a BST 37.30%  Medium
+320 Generalized Abbreviation                              40.40%  Medium LOCKED
+230 Kth Smallest Element in a BST                         37.30%  Medium DONE
 310 Minimum Height Trees  26.70%  Medium
 163 Missing Ranges  29.00%  Medium
 323 Number of Connected Components in an Undirected Graph   42.80%  Medium
