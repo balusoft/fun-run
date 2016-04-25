@@ -54,6 +54,7 @@ public:
         //i  ,j-1 i  ,  j i  ,j+1
         //i+1,j-1 i+1,  j i+1,j+1
         int count=0;
+        /*
         if (check(board, i-1, j-1)) ++count;
         if (check(board, i-1, j)) ++count;
         if (check(board, i-1, j+1)) ++count;
@@ -62,7 +63,18 @@ public:
         if (check(board, i+1, j-1)) ++count;
         if (check(board, i+1, j)) ++count;
         if (check(board, i+1, j+1)) ++count;
-        
+        */
+        for (int x=max(0, i-1); x<=min(i+1, (int)board.size()); ++x) {
+          for (int y=max(0, j-1); y<=min(j+1, (int)board[0].size()); ++y) {
+            if (((x==i) && (y==j)) || !(board[i][j] & 1)) {
+              continue;
+            }
+            /*
+            if ( x != i or y != j) {
+              count += (board[i][j] & 1);
+            }
+            */
+        }
         return count;
     }
     bool check(vector<vector<int>> &board, int i, int j) {
