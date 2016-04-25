@@ -43,11 +43,11 @@
 173 Binary Search Tree Iterator                           34.20%  Medium DONE
 298 Binary Tree Longest Consecutive Sequence              36.60%  Medium DONE
 271 Encode and Decode Strings                             27.00%  Medium LOCKED
-162 Find Peak Element                                     32.90%  Medium DONE
+162 Find Peak Element                                     32.90%  Medium LOCKED
 251 Flatten 2D Vector                                     33.50%  Medium DONE
 341 Flatten Nested List Iterator                          17.10%  Medium DONE
-294 Flip Game II  41.30%  Medium
-166 Fraction to Recurring Decimal 15.00%  Medium
+294 Flip Game II                                          41.30%  Medium DONE
+166 Fraction to Recurring Decimal                         15.00%  Medium DONE
 289 Game of Life  34.00%  Medium
 320 Generalized Abbreviation  40.40%  Medium
 22  Generate Parentheses  36.60%  Medium
