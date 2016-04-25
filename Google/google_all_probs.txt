@@ -48,22 +48,22 @@
 341 Flatten Nested List Iterator                          17.10%  Medium DONE
 294 Flip Game II                                          41.30%  Medium DONE
 166 Fraction to Recurring Decimal                         15.00%  Medium DONE
-289 Game of Life  34.00%  Medium
-320 Generalized Abbreviation  40.40%  Medium
-22  Generate Parentheses  36.60%  Medium
-261 Graph Valid Tree  32.50%  Medium
-274 H-Index 29.20%  Medium
-208 Implement Trie (Prefix Tree)  25.40%  Medium
+22  Generate Parentheses                                  36.60%  Medium DONE
+261 Graph Valid Tree                                      32.50%  Medium DONE
+274 H-Index                                               29.20%  Medium DONE
+208 Implement Trie (Prefix Tree)                          25.40%  Medium DONE
+253 Meeting Rooms II                                      34.50%  Medium DONE
+200 Number of Islands                                     27.40%  Medium DONE
+279 Perfect Squares                                       32.20%  Medium DONE
+318 Maximum Product of Word Lengths                       39.40%  Medium DONE
+289 Game of Life                                          34.00%  Medium DONE
+320 Generalized Abbreviation                              40.40%  Medium
 230 Kth Smallest Element in a BST 37.30%  Medium
-318 Maximum Product of Word Lengths 39.40%  Medium
-253 Meeting Rooms II  34.50%  Medium
 310 Minimum Height Trees  26.70%  Medium
 163 Missing Ranges  29.00%  Medium
 323 Number of Connected Components in an Undirected Graph   42.80%  Medium
-200 Number of Islands 27.40%  Medium
 330 Patching Array  28.80%  Medium
 284 Peeking Iterator  33.30%  Medium
-279 Perfect Squares 32.20%  Medium
 332 Reconstruct Itinerary 23.50%  Medium
 240 Search a 2D Matrix II 34.20%  Medium
 247 Strobogrammatic Number II   34.00%  Medium
