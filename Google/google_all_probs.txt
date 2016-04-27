@@ -59,11 +59,10 @@
 289 Game of Life                                          34.00%  Medium DONE
 320 Generalized Abbreviation                              40.40%  Medium LOCKED
 230 Kth Smallest Element in a BST                         37.30%  Medium DONE
-310 Minimum Height Trees  26.70%  Medium
-163 Missing Ranges  29.00%  Medium
-323 Number of Connected Components in an Undirected Graph   42.80%  Medium
-330 Patching Array  28.80%  Medium
-284 Peeking Iterator  33.30%  Medium
+323 Number of Connected Components in an Undirected Graph 42.80%  Medium LOCKED
+163 Missing Ranges                                        29.00%  Medium LOCKED
+330 Patching Array                                        28.80%  Medium DONE
+284 Peeking Iterator                                      33.30%  Medium
 332 Reconstruct Itinerary 23.50%  Medium
 240 Search a 2D Matrix II 34.20%  Medium
 247 Strobogrammatic Number II   34.00%  Medium
@@ -73,3 +72,4 @@
 324 Wiggle Sort II  21.90%  Medium
 280 Wiggle Sort   49.50%  Medium
 281 Zigzag Iterator   42.30%  Medium
+310 Minimum Height Trees  26.70%  Medium
