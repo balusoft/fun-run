@@ -63,7 +63,7 @@
 163 Missing Ranges                                        29.00%  Medium LOCKED
 330 Patching Array                                        28.80%  Medium DONE
 284 Peeking Iterator                                      33.30%  Medium DONE
-332 Reconstruct Itinerary 23.50%  Medium
+332 Reconstruct Itinerary                                 23.50%  Medium DONE
 240 Search a 2D Matrix II 34.20%  Medium
 247 Strobogrammatic Number II   34.00%  Medium
 228 Summary Ranges  23.90%  Medium
