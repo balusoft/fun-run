@@ -64,8 +64,8 @@
 330 Patching Array                                        28.80%  Medium DONE
 284 Peeking Iterator                                      33.30%  Medium DONE
 332 Reconstruct Itinerary                                 23.50%  Medium DONE
-240 Search a 2D Matrix II 34.20%  Medium
-247 Strobogrammatic Number II   34.00%  Medium
+240 Search a 2D Matrix II                                 34.20%  Medium DONE
+247 Strobogrammatic Number II                             34.00%  Medium LOCKED
 228 Summary Ranges  23.90%  Medium
 313 Super Ugly Number 33.60%  Medium
 331 Verify Preorder Serialization of a Binary Tree  31.50%  Medium
